@@ -1,5 +1,7 @@
 package com.questionnaire.jpa;
 
+import com.questionnaire.status.UserStatus;
+
 import javax.persistence.*;
 
 /**
@@ -14,6 +16,7 @@ public class UserEntity {
     private String username;
     private String password;
     private String email;
+    private String status;
 
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "user_id_seq")
@@ -77,19 +80,30 @@ public class UserEntity {
         this.email = email;
     }
 
+    @Basic
+    @Column(name = "status")
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof UserEntity)) return false;
 
         UserEntity that = (UserEntity) o;
 
         if (id != that.id) return false;
-        if (email != null ? !email.equals(that.email) : that.email != null) return false;
+        if (!email.equals(that.email)) return false;
         if (lastName != null ? !lastName.equals(that.lastName) : that.lastName != null) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (password != null ? !password.equals(that.password) : that.password != null) return false;
-        if (username != null ? !username.equals(that.username) : that.username != null) return false;
+        if (!name.equals(that.name)) return false;
+        if (!password.equals(that.password)) return false;
+        if (!status.equals(that.status)) return false;
+        if (!username.equals(that.username)) return false;
 
         return true;
     }
@@ -97,11 +111,25 @@ public class UserEntity {
     @Override
     public int hashCode() {
         int result = id;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + name.hashCode();
         result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
-        result = 31 * result + (username != null ? username.hashCode() : 0);
-        result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + username.hashCode();
+        result = 31 * result + password.hashCode();
+        result = 31 * result + email.hashCode();
+        result = 31 * result + status.hashCode();
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "UserEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", status='" + status + '\'' +
+                '}';
     }
 }
