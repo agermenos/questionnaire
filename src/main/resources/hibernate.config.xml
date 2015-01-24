@@ -10,6 +10,7 @@
     <mapping class="com.questionnaire.jpa.QuestionEntity"/>
     <mapping class="com.questionnaire.jpa.QuestionnaireEntity"/>
     <mapping class="com.questionnaire.jpa.UserEntity"/>
+    <mapping class="com.questionnaire.jpa.UserQuestionsEntity"/>
     <!-- DB schema will be updated if needed -->
     <!-- <property name="hbm2ddl.auto">update</property> -->
   </session-factory>

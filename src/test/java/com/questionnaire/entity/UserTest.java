@@ -68,9 +68,9 @@ public class UserTest extends AbstractTest {
         UserTest userTest=new UserTest("spring/config/beanlocations.xml");
         UserDao userDao = (UserDao)userTest.getContext().getBean("userDao");
         try {
-           // userTest.testInserts(userDao);
-           // userTest.updateUser(userDao);
-           // userTest.retrieveUser(userDao);
+            userTest.testInserts(userDao);
+            userTest.updateUser(userDao);
+            userTest.retrieveUser(userDao);
             userTest.findByName(userDao);
             userTest.findByLastName(userDao);
         }

@@ -4,7 +4,7 @@
     <facet type="hibernate" name="Hibernate">
       <configuration>
         <datasource-map>
-          <unit-entry name="hibernate.config.xml" value="0de1e849-8f5d-4cbd-9f4e-a7ba6bec0dc9" />
+          <unit-entry name="hibernate.config.xml" value="1d4b2c74-b258-43a0-a75d-7e53b17bcccc" />
           <unit-entry name="sessionFactory" value="dataSource" />
         </datasource-map>
         <naming-strategy-map />
@@ -14,7 +14,9 @@
     <facet type="Spring" name="Spring">
       <configuration>
         <fileset id="fileset" name="Spring Application Context" removed="false">
+          <file>file://$MODULE_DIR$/src/main/resources/spring/database/datasource.xml</file>
           <file>file://$MODULE_DIR$/src/main/resources/spring/config/beanlocations.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/spring/database/hibernate.xml</file>
         </fileset>
       </configuration>
     </facet>
@@ -86,6 +88,5 @@
     <orderEntry type="library" name="Maven: aopalliance:aopalliance:1.0" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-expression:4.0.4.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-tx:4.0.3.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.hibernate:hibernate-core:4.3.5.Final" level="project" />
   </component>
 </module>
