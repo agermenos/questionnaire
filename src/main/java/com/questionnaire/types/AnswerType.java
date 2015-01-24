@@ -6,6 +6,6 @@ package com.questionnaire.types;
 public enum AnswerType {
     TEXT,
     CHOICE,
-    NUMBER;
+    MULTIPLE_CHOICE;
     private AnswerType() {}
 }

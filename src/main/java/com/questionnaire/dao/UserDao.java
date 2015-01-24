@@ -61,7 +61,7 @@ public class UserDao {
         Criteria criteria = sessionFactory.
                 getCurrentSession().
                 createCriteria(UserEntity.class);
-        criteria.add(Restrictions.like("last_name", "%" + lastName + "%"));
+        criteria.add(Restrictions.like("lastName", "%" + lastName + "%"));
         return criteria.list();
     }
 

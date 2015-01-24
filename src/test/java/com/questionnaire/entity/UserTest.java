@@ -7,6 +7,7 @@ import com.questionnaire.status.UserStatus;
 import com.questionnaire.util.AESTransformer;
 
 import java.text.ParseException;
+import java.util.List;
 
 /**
  * Created by Alejandro on 8/17/2014.
@@ -14,6 +15,24 @@ import java.text.ParseException;
 public class UserTest extends AbstractTest {
     public UserTest(String context){
         super(context);
+    }
+
+    public void findByLastName(UserDao userDao) {
+        List<UserEntity> users = userDao.findByLastName("Germenos");
+        if (users!=null) {
+            for (UserEntity u:users){
+                getLog().info("User: " + u);
+            }
+        }
+    }
+
+    public void findByName(UserDao userDao) {
+        List<UserEntity> users = userDao.findByName("Alejandro");
+        if (users!=null) {
+            for (UserEntity u:users){
+                getLog().info("User: " + u);
+            }
+        }
     }
 
     public void testInserts(UserDao userDao) throws ParseException {
@@ -50,12 +69,15 @@ public class UserTest extends AbstractTest {
         UserDao userDao = (UserDao)userTest.getContext().getBean("userDao");
         try {
            // userTest.testInserts(userDao);
-            userTest.updateUser(userDao);
-            userTest.retrieveUser(userDao);
+           // userTest.updateUser(userDao);
+           // userTest.retrieveUser(userDao);
+            userTest.findByName(userDao);
+            userTest.findByLastName(userDao);
         }
         catch (Exception e){
-            e.printStackTrace();
+            userTest.getLog().error(e.toString());
         }
     }
+
 
 }
