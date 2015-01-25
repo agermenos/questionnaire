@@ -4,6 +4,7 @@ import com.questionnaire.jpa.AnswerEntity;
 import org.hibernate.SQLQuery;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
 /**
  * Created by agermenos on 1/23/15.
  */
+@Repository("answerDao")
 public class AnswerDao {
     @Autowired
     private SessionFactory sessionFactory;
@@ -38,7 +40,7 @@ public class AnswerDao {
     @Transactional
     List<AnswerEntity> findByQuestionnaireAndUser(int questionnaireId, int userId){
         SQLQuery query = sessionFactory.getCurrentSession().createSQLQuery("" +
-                "SELECT answer from answer inner join question on answer.questionId = question.id " +
+                "SELECT * from answer inner join question on answer.questionId = question.id " +
                 "inner join questionnaire on questionnaire.id = " + questionnaireId  + " and anwer.userId = " + userId);
         query.addEntity(AnswerEntity.class);
         return query.list();

@@ -3,12 +3,14 @@ package com.questionnaire.dao;
 import com.questionnaire.jpa.QuestionEntity;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 
 /**
  * Created by agermenos on 1/23/15.
  */
+@Repository("questionDao")
 public class QuestionDao {
     @Autowired
     private SessionFactory sessionFactory;

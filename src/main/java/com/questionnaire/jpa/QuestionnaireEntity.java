@@ -1,6 +1,11 @@
 package com.questionnaire.jpa;
 
+import org.hibernate.SQLQuery;
+
 import javax.persistence.*;
+import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by agermenos on 1/22/15.
@@ -15,6 +20,7 @@ public class QuestionnaireEntity {
     private String modified;
     private String status;
     private UserEntity user;
+    private List<QuestionEntity> questions;
 
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "questionnaire_id_seq")
@@ -78,10 +84,25 @@ public class QuestionnaireEntity {
         this.user = user;
     }
 
+    public List<QuestionEntity> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(List<QuestionEntity> questions) {
+        this.questions = questions;
+    }
+
+    public void addQuestion(QuestionEntity question){
+        if (questions==null) {
+            questions=new ArrayList<QuestionEntity>();
+        }
+        questions.add(question);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof QuestionnaireEntity)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         QuestionnaireEntity that = (QuestionnaireEntity) o;
 
@@ -89,6 +110,7 @@ public class QuestionnaireEntity {
         if (!created.equals(that.created)) return false;
         if (modified != null ? !modified.equals(that.modified) : that.modified != null) return false;
         if (!name.equals(that.name)) return false;
+        if (questions != null ? !questions.equals(that.questions) : that.questions != null) return false;
         if (!status.equals(that.status)) return false;
         if (!user.equals(that.user)) return false;
 

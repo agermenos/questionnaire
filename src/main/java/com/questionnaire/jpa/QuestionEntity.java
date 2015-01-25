@@ -1,6 +1,8 @@
 package com.questionnaire.jpa;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by agermenos on 1/22/15.
@@ -14,6 +16,7 @@ public class QuestionEntity {
     private String type;
     private QuestionnaireEntity questionnaire;
     private QuestionEntity parentQuestion;
+    private List<AnswerEntity> answers;
 
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "question_id_seq")
@@ -63,6 +66,21 @@ public class QuestionEntity {
 
     public void setParentQuestion(QuestionEntity parentQuestion) {
         this.parentQuestion = parentQuestion;
+    }
+
+    public List<AnswerEntity> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(List<AnswerEntity> answers) {
+        this.answers = answers;
+    }
+
+    public void addAnswer(AnswerEntity answer){
+        if (answers==null){
+            answers = new ArrayList<AnswerEntity>();
+        }
+        answers.add(answer);
     }
 
     @Override
