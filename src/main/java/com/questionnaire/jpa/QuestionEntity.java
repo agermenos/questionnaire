@@ -68,6 +68,7 @@ public class QuestionEntity {
         this.parentQuestion = parentQuestion;
     }
 
+    @Transient
     public List<AnswerEntity> getAnswers() {
         return answers;
     }

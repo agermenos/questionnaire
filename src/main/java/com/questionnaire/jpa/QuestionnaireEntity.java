@@ -84,6 +84,7 @@ public class QuestionnaireEntity {
         this.user = user;
     }
 
+    @Transient
     public List<QuestionEntity> getQuestions() {
         return questions;
     }

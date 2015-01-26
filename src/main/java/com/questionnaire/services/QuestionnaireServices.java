@@ -2,9 +2,11 @@ package com.questionnaire.services;
 
 import com.questionnaire.dao.QuestionDao;
 import com.questionnaire.dao.QuestionnaireDao;
+import com.questionnaire.dao.UserDao;
 import com.questionnaire.dao.UserQuestionsDao;
 import com.questionnaire.jpa.QuestionEntity;
 import com.questionnaire.jpa.QuestionnaireEntity;
+import com.questionnaire.jpa.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,8 @@ public class QuestionnaireServices {
     QuestionDao questionDao;
     @Autowired
     UserQuestionsDao userQuestionsDao;
+    @Autowired
+    UserDao userDao;
 
     @Transactional
     public QuestionnaireEntity getQuestionnaireById(int questionnaireId){
@@ -33,7 +37,8 @@ public class QuestionnaireServices {
     }
 
     @Transactional
-    public void storeQuestionnaire(QuestionnaireEntity questionnaire){
+    public void storeQuestionnaire(QuestionnaireEntity questionnaire, int userId){
+        questionnaire.setUser(userDao.findById(userId));
         if (questionnaire.getId()==0) {
             questionnaire.setCreated(new Date().toString());
             questionnaireDao.add(questionnaire);
