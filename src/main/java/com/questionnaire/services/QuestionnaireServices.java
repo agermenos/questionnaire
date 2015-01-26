@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,7 +34,14 @@ public class QuestionnaireServices {
 
     @Transactional
     public void storeQuestionnaire(QuestionnaireEntity questionnaire){
-        questionnaireDao.add(questionnaire);
+        if (questionnaire.getId()==0) {
+            questionnaire.setCreated(new Date().toString());
+            questionnaireDao.add(questionnaire);
+        }
+        else {
+            questionnaire.setModified(new Date().toString());
+            questionnaireDao.update(questionnaire);
+        }
         if (questionnaire.getQuestions()!=null ){
             for (QuestionEntity question:questionnaire.getQuestions()){
                 questionDao.add(question);
