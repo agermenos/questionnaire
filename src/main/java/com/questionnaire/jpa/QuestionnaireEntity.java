@@ -13,19 +13,30 @@ import java.util.List;
 @Entity
 @Table(name = "questionnaire", schema = "public", catalog = "questionnaire")
 public class QuestionnaireEntity {
-    private int id;
-
-    private String name;
-    private String created;
-    private String modified;
-    private String status;
-    private UserEntity user;
-    private List<QuestionEntity> questions;
-
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "questionnaire_id_seq")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pk_sequence")
     @Column(name = "id", unique = true, nullable = false)
+    private int id;
+    @Basic
+    @Column(name = "name")
+    private String name;
+    @Basic
+    @Column(name = "created")
+    private String created;
+    @Basic
+    @Column(name = "modified")
+    private String modified;
+    @Basic
+    @Column(name = "status")
+    private String status;
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinColumn(name="user_id")
+    private UserEntity user;
+    @Transient
+    private List<QuestionEntity> questions;
+
+
     public int getId() {
         return id;
     }
@@ -34,8 +45,6 @@ public class QuestionnaireEntity {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -44,8 +53,6 @@ public class QuestionnaireEntity {
         this.name = name;
     }
 
-    @Basic
-    @Column(name = "created")
     public String getCreated() {
         return created;
     }
@@ -54,8 +61,6 @@ public class QuestionnaireEntity {
         this.created = created;
     }
 
-    @Basic
-    @Column(name = "modified")
     public String getModified() {
         return modified;
     }
@@ -64,8 +69,6 @@ public class QuestionnaireEntity {
         this.modified = modified;
     }
 
-    @Basic
-    @Column(name = "status")
     public String getStatus() {
         return status;
     }
@@ -74,8 +77,6 @@ public class QuestionnaireEntity {
         this.status = status;
     }
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinColumn(name="user_id")
     public UserEntity getUser() {
         return user;
     }
@@ -84,7 +85,6 @@ public class QuestionnaireEntity {
         this.user = user;
     }
 
-    @Transient
     public List<QuestionEntity> getQuestions() {
         return questions;
     }

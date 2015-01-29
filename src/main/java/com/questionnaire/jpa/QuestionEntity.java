@@ -10,18 +10,26 @@ import java.util.List;
 @Entity
 @Table(name = "question", schema = "public", catalog = "questionnaire")
 public class QuestionEntity {
-    private int id;
-
-    private String question;
-    private String type;
-    private QuestionnaireEntity questionnaire;
-    private QuestionEntity parentQuestion;
-    private List<AnswerEntity> answers;
-
     @Id
     @SequenceGenerator(name = "pk_sequence", sequenceName = "question_id_seq")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pk_sequence")
     @Column(name = "id", unique = true, nullable = false)
+    private int id;
+    @Basic
+    @Column(name = "question")
+    private String question;
+    @Basic
+    @Column(name = "type")
+    private String type;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private QuestionnaireEntity questionnaire;
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @JoinColumn(name= "parent_question")
+    private QuestionEntity parentQuestion;
+    @Transient
+    private List<AnswerEntity> answers;
+
     public int getId() {
         return id;
     }
@@ -30,8 +38,6 @@ public class QuestionEntity {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "question")
     public String getQuestion() {
         return question;
     }
@@ -40,8 +46,6 @@ public class QuestionEntity {
         this.question = question;
     }
 
-    @Basic
-    @Column(name = "type")
     public String getType() {
         return type;
     }
@@ -50,7 +54,6 @@ public class QuestionEntity {
         this.type = type;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
     public QuestionnaireEntity getQuestionnaire() {
         return questionnaire;
     }
@@ -59,7 +62,6 @@ public class QuestionEntity {
         this.questionnaire = questionnaire;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
     public QuestionEntity getParentQuestion() {
         return parentQuestion;
     }
@@ -68,7 +70,6 @@ public class QuestionEntity {
         this.parentQuestion = parentQuestion;
     }
 
-    @Transient
     public List<AnswerEntity> getAnswers() {
         return answers;
     }
@@ -110,4 +111,5 @@ public class QuestionEntity {
         result = 31 * result + (parentQuestion != null ? parentQuestion.hashCode() : 0);
         return result;
     }
+
 }

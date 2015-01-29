@@ -7,6 +7,7 @@ import com.questionnaire.dao.UserQuestionsDao;
 import com.questionnaire.jpa.QuestionEntity;
 import com.questionnaire.jpa.QuestionnaireEntity;
 import com.questionnaire.jpa.UserEntity;
+import com.questionnaire.status.QuestionnaireStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +42,8 @@ public class QuestionnaireServices {
         questionnaire.setUser(userDao.findById(userId));
         if (questionnaire.getId()==0) {
             questionnaire.setCreated(new Date().toString());
+            questionnaire.setModified(new Date().toString());
+            questionnaire.setStatus(QuestionnaireStatus.ACTIVE.toString());
             questionnaireDao.add(questionnaire);
         }
         else {
@@ -49,6 +52,12 @@ public class QuestionnaireServices {
         }
         if (questionnaire.getQuestions()!=null ){
             for (QuestionEntity question:questionnaire.getQuestions()){
+                questionDao.add(question);
+            }
+        }
+        if (questionnaire.getQuestions()!=null){
+            for (QuestionEntity question:questionnaire.getQuestions()) {
+                question.setQuestionnaire(questionnaire);
                 questionDao.add(question);
             }
         }
