@@ -1,9 +1,6 @@
 package com.questionnaire.jpa;
 
-import org.hibernate.SQLQuery;
-
 import javax.persistence.*;
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +27,7 @@ public class QuestionnaireEntity {
     @Basic
     @Column(name = "status")
     private String status;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
     @OneToMany(fetch = FetchType.EAGER, mappedBy= "questionnaire")
@@ -139,7 +136,6 @@ public class QuestionnaireEntity {
                 ", modified='" + modified + '\'' +
                 ", status='" + status + '\'' +
                 ", user=" + user +
-                ", questions=" + questions +
                 '}';
     }
 }

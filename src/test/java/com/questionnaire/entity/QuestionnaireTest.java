@@ -33,7 +33,7 @@ public class QuestionnaireTest extends AbstractTest {
         questionnaire.setName("Basic Questionnaire");
         questionnaire.setCreated(new Date().toString());
         questionnaire.setModified(new Date().toString());
-        questionnaire.setStatus(QuestionnaireStatus.ACTIVE.toString());
+        questionnaire.setStatus(QuestionnaireStatus.CREATED.toString());
 
         questionnaire.addQuestion(createQuestion("How many fingers are in one hand?",null, QuestionStatus.TEXT));
         QuestionEntity outerQuestion = createQuestion("What's the capital of Mexico?", null, QuestionStatus.MULTIPLE_CHOICE);
@@ -48,7 +48,7 @@ public class QuestionnaireTest extends AbstractTest {
     }
 
     public void getQuestionnaire(QuestionnaireDao questionnaireDao){
-        QuestionnaireEntity questionnaire = questionnaireDao.findById(150);
+        QuestionnaireEntity questionnaire = questionnaireDao.findById(1500);
         getLog().info("Questionnaire: " + questionnaire.toString());
         if (questionnaire.getQuestions()!=null){
             for (QuestionEntity question:questionnaire.getQuestions()){

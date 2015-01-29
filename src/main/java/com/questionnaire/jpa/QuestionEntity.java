@@ -21,11 +21,11 @@ public class QuestionEntity {
     @Basic
     @Column(name = "type")
     private String type;
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "questionnaire_id", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name= "questionnaire_id")
     private QuestionnaireEntity questionnaire;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name= "parent_question")
     private QuestionEntity parentQuestion;
     @Transient

@@ -38,12 +38,20 @@ public class QuestionnaireServices {
     }
 
     @Transactional
+    public void publishQuestionnaire(int questionnaireId){
+        QuestionnaireEntity questionnaire = questionnaireDao.findById(questionnaireId);
+        if (questionnaire.getQuestions()!=null){
+            questionnaire.setStatus(QuestionnaireStatus.PUBLISHED.toString());
+        }
+    }
+
+    @Transactional
     public void storeQuestionnaire(QuestionnaireEntity questionnaire, int userId){
         questionnaire.setUser(userDao.findById(userId));
         if (questionnaire.getId()==0) {
             questionnaire.setCreated(new Date().toString());
             questionnaire.setModified(new Date().toString());
-            questionnaire.setStatus(QuestionnaireStatus.ACTIVE.toString());
+            questionnaire.setStatus(QuestionnaireStatus.CREATED.toString());
             questionnaireDao.add(questionnaire);
         }
         else {
