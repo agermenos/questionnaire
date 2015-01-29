@@ -129,4 +129,17 @@ public class QuestionnaireEntity {
         result = 31 * result + user.hashCode();
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "QuestionnaireEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", created='" + created + '\'' +
+                ", modified='" + modified + '\'' +
+                ", status='" + status + '\'' +
+                ", user=" + user +
+                ", questions=" + questions +
+                '}';
+    }
 }

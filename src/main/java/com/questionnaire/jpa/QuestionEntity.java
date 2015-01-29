@@ -113,4 +113,15 @@ public class QuestionEntity {
         return result;
     }
 
+    @Override
+    public String toString() {
+        return "QuestionEntity{" +
+                "id=" + id +
+                ", question='" + question + '\'' +
+                ", type='" + type + '\'' +
+                ", questionnaire=" + questionnaire +
+                ", parentQuestion=" + parentQuestion +
+                ", answers=" + answers +
+                '}';
+    }
 }

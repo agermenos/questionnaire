@@ -47,11 +47,22 @@ public class QuestionnaireTest extends AbstractTest {
         questionnaireDao.add(questionnaire);
     }
 
+    public void getQuestionnaire(QuestionnaireDao questionnaireDao){
+        QuestionnaireEntity questionnaire = questionnaireDao.findById(150);
+        getLog().info("Questionnaire: " + questionnaire.toString());
+        if (questionnaire.getQuestions()!=null){
+            for (QuestionEntity question:questionnaire.getQuestions()){
+                getLog().info("Question: " + question.toString());
+            }
+        }
+    }
+
     public static void main(String args[]){
         QuestionnaireTest questionnaireTest=new QuestionnaireTest("spring/config/beanlocations.xml");
         QuestionnaireDao questionnaireDao = (QuestionnaireDao)questionnaireTest.getContext().getBean("questionnaireDao");
         UserDao userDao = (UserDao)questionnaireTest.getContext().getBean("userDao");
 
-        questionnaireTest.createQuestionnaireTest(questionnaireDao, userDao);
+        //questionnaireTest.createQuestionnaireTest(questionnaireDao, userDao);
+        questionnaireTest.getQuestionnaire(questionnaireDao);
     }
 }
