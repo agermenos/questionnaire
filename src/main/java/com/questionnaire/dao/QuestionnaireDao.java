@@ -24,6 +24,9 @@ public class QuestionnaireDao {
     @Transactional
     public void add(QuestionnaireEntity questionnaire){
         sessionFactory.getCurrentSession().save(questionnaire);
+        for (QuestionEntity question:questionnaire.getQuestions()){
+            sessionFactory.getCurrentSession().save(question);
+        }
     }
 
     @Transactional
