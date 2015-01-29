@@ -22,6 +22,7 @@ public class QuestionEntity {
     @Column(name = "type")
     private String type;
     @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "questionnaire_id", nullable = false)
     private QuestionnaireEntity questionnaire;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)

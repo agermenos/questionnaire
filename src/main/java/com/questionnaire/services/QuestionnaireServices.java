@@ -50,16 +50,7 @@ public class QuestionnaireServices {
             questionnaire.setModified(new Date().toString());
             questionnaireDao.update(questionnaire);
         }
-        if (questionnaire.getQuestions()!=null ){
-            for (QuestionEntity question:questionnaire.getQuestions()){
-                questionDao.add(question);
-            }
-        }
-        if (questionnaire.getQuestions()!=null){
-            for (QuestionEntity question:questionnaire.getQuestions()) {
-                question.setQuestionnaire(questionnaire);
-                questionDao.add(question);
-            }
-        }
+
+
     }
 }

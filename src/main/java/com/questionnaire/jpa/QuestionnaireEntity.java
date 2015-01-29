@@ -30,10 +30,10 @@ public class QuestionnaireEntity {
     @Basic
     @Column(name = "status")
     private String status;
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinColumn(name="user_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
-    @Transient
+    @OneToMany(fetch = FetchType.EAGER, mappedBy= "questionnaire")
     private List<QuestionEntity> questions;
 
 
@@ -97,6 +97,7 @@ public class QuestionnaireEntity {
         if (questions==null) {
             questions=new ArrayList<QuestionEntity>();
         }
+        question.setQuestionnaire(this);
         questions.add(question);
     }
 
