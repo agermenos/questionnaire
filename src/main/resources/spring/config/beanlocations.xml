@@ -15,6 +15,4 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.spri
             base-package="com.questionnaire.dao" />
     <context:component-scan
             base-package="com.questionnaire.services" />
-
-
 </beans>
