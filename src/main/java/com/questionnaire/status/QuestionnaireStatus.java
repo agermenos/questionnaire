@@ -6,6 +6,7 @@ package com.questionnaire.status;
 public enum QuestionnaireStatus {
     CREATED,
     PUBLISHED,
-    DEACTIVATED;
+    DEACTIVATED,
+    LOCKED;
     private QuestionnaireStatus() {}
 }
