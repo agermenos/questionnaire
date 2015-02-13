@@ -3,6 +3,7 @@ package com.questionnaire.rest;
 import com.questionnaire.jpa.QuestionnaireEntity;
 import com.questionnaire.services.QuestionnaireServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -16,6 +17,7 @@ import javax.ws.rs.core.Response;
  */
 
 @Path("/questionnaire")
+@Controller
 public class QuestionnaireRest {
     @Autowired
     QuestionnaireServices questionnaireServices;
@@ -24,6 +26,7 @@ public class QuestionnaireRest {
     @Path("/{element}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getToDoInJSON(@PathParam("element") int id) {
+
         QuestionnaireEntity questionnaire = questionnaireServices.getQuestionnaireById(id);
         System.out.println("questionnaire: " + questionnaireServices);
         return Response.status(Response.Status.OK).entity(questionnaire).build();

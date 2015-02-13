@@ -62,7 +62,7 @@ public class QuestionnaireTest extends AbstractTest {
         QuestionnaireDao questionnaireDao = (QuestionnaireDao)questionnaireTest.getContext().getBean("questionnaireDao");
         UserDao userDao = (UserDao)questionnaireTest.getContext().getBean("userDao");
 
-        //questionnaireTest.createQuestionnaireTest(questionnaireDao, userDao);
-        questionnaireTest.getQuestionnaire(questionnaireDao);
+        questionnaireTest.createQuestionnaireTest(questionnaireDao, userDao);
+        //questionnaireTest.getQuestionnaire(questionnaireDao);
     }
 }
