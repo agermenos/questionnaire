@@ -1,11 +1,14 @@
 package com.questionnaire.dao;
 
 import com.questionnaire.jpa.QuestionEntity;
+import com.questionnaire.jpa.QuestionnaireEntity;
+import org.hibernate.SQLQuery;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 /**
  * Created by agermenos on 1/23/15.
@@ -33,5 +36,12 @@ public class QuestionDao {
     @Transactional
     public QuestionEntity findById(int questionId){
         return (QuestionEntity) sessionFactory.getCurrentSession().get(QuestionEntity.class, questionId);
+    }
+
+    public List<QuestionEntity> findByQuestionnaireId(int questionnaireId) {
+        SQLQuery query = sessionFactory.getCurrentSession().createSQLQuery("" +
+                "SELECT * from question WHERE questionnaire_id=" + questionnaireId);
+        query.addEntity(QuestionEntity.class);
+        return query.list();
     }
 }

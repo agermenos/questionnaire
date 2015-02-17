@@ -21,11 +21,11 @@ public class QuestionEntity {
     @Basic
     @Column(name = "type")
     private String type;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     @JoinColumn(name= "questionnaire_id")
     private QuestionnaireEntity questionnaire;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name= "parent_question")
     private QuestionEntity parentQuestion;
     @Transient
@@ -56,7 +56,7 @@ public class QuestionEntity {
     }
 
     public QuestionnaireEntity getQuestionnaire() {
-        return questionnaire;
+        return null;
     }
 
     public void setQuestionnaire(QuestionnaireEntity questionnaire) {

@@ -136,6 +136,6 @@ public class QuestionnaireEntity {
                 ", modified='" + modified + '\'' +
                 ", status='" + status + '\'' +
                 ", user=" + user +
-                '}';
+                "}";
     }
 }

@@ -61,4 +61,9 @@ public class QuestionnaireServices {
 
 
     }
+
+    @Transactional
+    public List<QuestionEntity> getQuestions(int questionnaireId) {
+        return questionDao.findByQuestionnaireId(questionnaireId);
+    }
 }
