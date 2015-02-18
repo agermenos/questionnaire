@@ -7,7 +7,6 @@ import com.questionnaire.dao.UserDao;
 import com.questionnaire.jpa.QuestionEntity;
 import com.questionnaire.jpa.QuestionnaireEntity;
 import com.questionnaire.jpa.UserEntity;
-import com.questionnaire.services.QuestionnaireServices;
 import com.questionnaire.status.QuestionStatus;
 import com.questionnaire.status.QuestionnaireStatus;
 

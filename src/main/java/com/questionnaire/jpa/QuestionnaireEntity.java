@@ -30,7 +30,8 @@ public class QuestionnaireEntity {
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
-    @OneToMany(fetch = FetchType.EAGER, mappedBy= "questionnaire")
+    @OneToMany(cascade={CascadeType.ALL})
+    @JoinColumn(name="questionnaire_id")
     private List<QuestionEntity> questions;
 
 
@@ -94,7 +95,7 @@ public class QuestionnaireEntity {
         if (questions==null) {
             questions=new ArrayList<QuestionEntity>();
         }
-        question.setQuestionnaire(this);
+        //question.setQuestionnaire(this);
         questions.add(question);
     }
 

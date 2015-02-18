@@ -21,9 +21,6 @@ public class QuestionEntity {
     @Basic
     @Column(name = "type")
     private String type;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
-    @JoinColumn(name= "questionnaire_id")
-    private QuestionnaireEntity questionnaire;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name= "parent_question")
@@ -57,10 +54,6 @@ public class QuestionEntity {
 
     public QuestionnaireEntity getQuestionnaire() {
         return null;
-    }
-
-    public void setQuestionnaire(QuestionnaireEntity questionnaire) {
-        this.questionnaire = questionnaire;
     }
 
     public QuestionEntity getParentQuestion() {
@@ -97,7 +90,6 @@ public class QuestionEntity {
         if (parentQuestion != null ? !parentQuestion.equals(that.parentQuestion) : that.parentQuestion != null)
             return false;
         if (!question.equals(that.question)) return false;
-        if (!questionnaire.equals(that.questionnaire)) return false;
         if (!type.equals(that.type)) return false;
 
         return true;
@@ -108,7 +100,6 @@ public class QuestionEntity {
         int result = id;
         result = 31 * result + question.hashCode();
         result = 31 * result + type.hashCode();
-        result = 31 * result + questionnaire.hashCode();
         result = 31 * result + (parentQuestion != null ? parentQuestion.hashCode() : 0);
         return result;
     }
@@ -119,7 +110,6 @@ public class QuestionEntity {
                 "id=" + id +
                 ", question='" + question + '\'' +
                 ", type='" + type + '\'' +
-                ", questionnaire=" + questionnaire +
                 ", parentQuestion=" + parentQuestion +
                 ", answers=" + answers +
                 '}';
