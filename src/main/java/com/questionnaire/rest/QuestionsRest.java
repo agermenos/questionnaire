@@ -1,6 +1,5 @@
 package com.questionnaire.rest;
 
-import com.google.gson.Gson;
 import com.questionnaire.jpa.QuestionEntity;
 import com.questionnaire.services.QuestionnaireServices;
 import org.slf4j.Logger;
@@ -33,8 +32,8 @@ public class QuestionsRest {
         //Gson gson = new Gson();
         List<QuestionEntity> questions = questionnaireServices.getQuestions(questionnaireId);
         log.info("questions:\n ");
-        for (QuestionEntity quesiton:questions) {
-            log.info (questions.toString());
+        for (QuestionEntity question:questions) {
+            log.info (question.toString());
         }
         return questions.toString();
     }

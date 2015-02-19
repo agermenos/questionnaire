@@ -30,7 +30,7 @@ public class QuestionnaireEntity {
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
-    @OneToMany(cascade={CascadeType.ALL})
+    @OneToMany(fetch = FetchType.EAGER, cascade={CascadeType.ALL})
     @JoinColumn(name="questionnaire_id")
     private List<QuestionEntity> questions;
 
@@ -137,6 +137,7 @@ public class QuestionnaireEntity {
                 ", modified='" + modified + '\'' +
                 ", status='" + status + '\'' +
                 ", user=" + user +
+                ", \nquestions=" + questions +
                 "}";
     }
 }

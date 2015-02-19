@@ -32,8 +32,6 @@ public class QuestionnaireServices {
     @Transactional
     public QuestionnaireEntity getQuestionnaireById(int questionnaireId){
         QuestionnaireEntity questionnaire = questionnaireDao.findById(questionnaireId);
-        List<QuestionEntity> questions = questionnaireDao.findQuestionsByQuestionnaire(questionnaireId);
-        questionnaire.setQuestions(questions);
         return questionnaire;
     }
 
