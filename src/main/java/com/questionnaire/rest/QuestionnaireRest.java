@@ -1,5 +1,6 @@
 package com.questionnaire.rest;
 
+import com.google.gson.Gson;
 import com.questionnaire.jpa.QuestionnaireEntity;
 import com.questionnaire.services.QuestionnaireServices;
 import org.slf4j.Logger;
@@ -22,12 +23,22 @@ public class QuestionnaireRest {
     @Autowired
     QuestionnaireServices questionnaireServices;
     Logger log = LoggerFactory.getLogger(QuestionnaireRest.class);
+    Gson gson;
 
     @RequestMapping(value="/{id}", method = RequestMethod.GET)
     public @ResponseBody
-    String getToDoInJSON(@PathVariable int id, Model model) {
+    String getQuestionnaire(@PathVariable int id, Model model) {
         QuestionnaireEntity questionnaire = questionnaireServices.getQuestionnaireById(id);
         log.info("questionnaire: " + questionnaire.toString());
-        return questionnaire.toString();
+        return gson.toJson(questionnaire);
+    }
+
+    @RequestMapping(value="/{id}", method = RequestMethod.GET)
+    public @ResponseBody
+    String addQuestions(@PathVariable int id, Model model) {
+        QuestionnaireEntity questionnaire = questionnaireServices.getQuestionnaireById(id);
+      //  questionnaire.setQuestions(questions);
+      //  questionnaireServices.storeQuestionnaire(questionnaire);
+        return null;
     }
 }
