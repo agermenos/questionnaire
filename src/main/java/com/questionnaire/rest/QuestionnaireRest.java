@@ -23,7 +23,7 @@ public class QuestionnaireRest {
     @Autowired
     QuestionnaireServices questionnaireServices;
     Logger log = LoggerFactory.getLogger(QuestionnaireRest.class);
-    Gson gson;
+    Gson gson=new Gson();
 
     @RequestMapping(value="/{id}", method = RequestMethod.GET)
     public @ResponseBody
@@ -33,7 +33,7 @@ public class QuestionnaireRest {
         return gson.toJson(questionnaire);
     }
 
-    @RequestMapping(value="/{id}", method = RequestMethod.GET)
+    @RequestMapping(value="/{id}", method = RequestMethod.PUT)
     public @ResponseBody
     String addQuestions(@PathVariable int id, Model model) {
         QuestionnaireEntity questionnaire = questionnaireServices.getQuestionnaireById(id);

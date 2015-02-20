@@ -1,5 +1,6 @@
 package com.questionnaire.rest;
 
+import com.google.gson.Gson;
 import com.questionnaire.jpa.QuestionEntity;
 import com.questionnaire.services.QuestionnaireServices;
 import org.slf4j.Logger;
@@ -25,6 +26,7 @@ public class QuestionsRest {
     @Autowired
     QuestionnaireServices questionnaireServices;
     Logger log = LoggerFactory.getLogger(QuestionsRest.class);
+    Gson gson=new Gson();
 
     @RequestMapping(value="/{questionnaireId}", method = RequestMethod.GET)
     public @ResponseBody
@@ -35,6 +37,6 @@ public class QuestionsRest {
         for (QuestionEntity question:questions) {
             log.info (question.toString());
         }
-        return questions.toString();
+        return gson.toJson(questions);
     }
 }
