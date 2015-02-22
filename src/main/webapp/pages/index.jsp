@@ -7,8 +7,11 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
+
   <head>
-    <title></title>
+      <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+      <script type="text/javascript" src="angular.min.js"></script>
+      <script type="text/javascript" src="app.js"></script>
   </head>
   <body>
         <h1>Soy, un perdedoooor!!</h1>
