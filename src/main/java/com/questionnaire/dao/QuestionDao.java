@@ -40,7 +40,8 @@ public class QuestionDao {
 
     public List<QuestionEntity> findByQuestionnaireId(int questionnaireId) {
         SQLQuery query = sessionFactory.getCurrentSession().createSQLQuery("" +
-                "SELECT * from question WHERE questionnaire_id=" + questionnaireId);
+                "SELECT * from question WHERE questionnaire_id=" + questionnaireId +
+                " AND parent_question is NULL");
         query.addEntity(QuestionEntity.class);
         return query.list();
     }

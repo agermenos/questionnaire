@@ -2,9 +2,9 @@
  * Created by Alejandro on 2/21/2015.
  */
 (function() {
-    var app = angular.module('gemStore', []);
+    var app = angular.module('questionnaire', []);
 
-    app.controller('StoreController', function(){
+    app.controller('QuestionnaireController', function(){
         this.products = gems;
     });
 

@@ -10,8 +10,7 @@
 
   <head>
       <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
-      <script type="text/javascript" src="angular.min.js"></script>
-      <script type="text/javascript" src="app.js"></script>
+      <script src="/js/questionnaire.js"></script>
   </head>
   <body>
         <h1>Soy, un perdedoooor!!</h1>

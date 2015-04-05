@@ -11,6 +11,7 @@ import com.questionnaire.status.QuestionStatus;
 import com.questionnaire.status.QuestionnaireStatus;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by agermenos on 1/28/15.
@@ -23,7 +24,7 @@ public class QuestionnaireTest extends AbstractTest {
     private QuestionEntity createQuestion(String strQuestion, QuestionEntity parent, QuestionStatus status){
         QuestionEntity question = new QuestionEntity();
         question.setQuestion(strQuestion);
-        question.setParentQuestion(parent);
+        question.setParent(parent);
         question.setType(status.toString());
         return question;
     }
@@ -47,10 +48,11 @@ public class QuestionnaireTest extends AbstractTest {
     }
 
     public void getQuestionnaire(QuestionnaireDao questionnaireDao){
-        QuestionnaireEntity questionnaire = questionnaireDao.findById(1500);
+        QuestionnaireEntity questionnaire = questionnaireDao.findById(150);
+        List<QuestionEntity> questions = questionnaireDao.findQuestionsByQuestionnaire(150);
         getLog().info("Questionnaire: " + questionnaire.toString());
-        if (questionnaire.getQuestions()!=null){
-            for (QuestionEntity question:questionnaire.getQuestions()){
+        if (questions!=null){
+            for (QuestionEntity question:questions){
                 getLog().info("Question: " + question.toString());
             }
         }
@@ -61,7 +63,7 @@ public class QuestionnaireTest extends AbstractTest {
         QuestionnaireDao questionnaireDao = (QuestionnaireDao)questionnaireTest.getContext().getBean("questionnaireDao");
         UserDao userDao = (UserDao)questionnaireTest.getContext().getBean("userDao");
 
-        questionnaireTest.createQuestionnaireTest(questionnaireDao, userDao);
-        //questionnaireTest.getQuestionnaire(questionnaireDao);
+        //questionnaireTest.createQuestionnaireTest(questionnaireDao, userDao);
+        questionnaireTest.getQuestionnaire(questionnaireDao);
     }
 }

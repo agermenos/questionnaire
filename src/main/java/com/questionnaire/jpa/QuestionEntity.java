@@ -2,7 +2,9 @@ package com.questionnaire.jpa;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by agermenos on 1/22/15.
@@ -22,11 +24,12 @@ public class QuestionEntity {
     @Column(name = "type")
     private String type;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
     @JoinColumn(name= "parent_question")
-    private QuestionEntity parentQuestion;
-    @Transient
-    private List<AnswerEntity> answers;
+    private QuestionEntity parent;
+    @OneToMany(mappedBy = "parent", fetch=FetchType.EAGER)
+    @MapKeyColumn(columnDefinition = "parent_question")
+    private Set<QuestionEntity> answers;
 
     public int getId() {
         return id;
@@ -56,62 +59,37 @@ public class QuestionEntity {
         return null;
     }
 
-    public QuestionEntity getParentQuestion() {
-        return parentQuestion;
+    public QuestionEntity getParent() {
+        return parent;
     }
 
-    public void setParentQuestion(QuestionEntity parentQuestion) {
-        this.parentQuestion = parentQuestion;
+    public void setParent(QuestionEntity parent) {
+        this.parent = parent;
     }
 
-    public List<AnswerEntity> getAnswers() {
+    public Set<QuestionEntity> getAnswers() {
         return answers;
     }
 
-    public void setAnswers(List<AnswerEntity> answers) {
+    public void setAnswers(Set<QuestionEntity> answers) {
         this.answers = answers;
     }
 
-    public void addAnswer(AnswerEntity answer){
+    public void addAnswer(QuestionEntity answer){
         if (answers==null){
-            answers = new ArrayList<AnswerEntity>();
+            answers = new HashSet<QuestionEntity>();
         }
         answers.add(answer);
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof QuestionEntity)) return false;
-
-        QuestionEntity that = (QuestionEntity) o;
-
-        if (id != that.id) return false;
-        if (parentQuestion != null ? !parentQuestion.equals(that.parentQuestion) : that.parentQuestion != null)
-            return false;
-        if (!question.equals(that.question)) return false;
-        if (!type.equals(that.type)) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id;
-        result = 31 * result + question.hashCode();
-        result = 31 * result + type.hashCode();
-        result = 31 * result + (parentQuestion != null ? parentQuestion.hashCode() : 0);
-        return result;
-    }
-
-    @Override
     public String toString() {
         return "QuestionEntity{" +
-                "id=" + id +
-                ", question='" + question + '\'' +
-                ", type='" + type + '\'' +
-                ", parentQuestion=" + parentQuestion +
-                ", answers=" + answers +
+                "id:" + id +
+                ", question:\"" + question + '\"' +
+                ", type:\"" + type + '\"' +
+                //", questions=" + questions +
+                ", answers:" + answers +
                 '}';
     }
 }
