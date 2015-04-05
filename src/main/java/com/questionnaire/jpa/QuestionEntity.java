@@ -1,9 +1,9 @@
 package com.questionnaire.jpa;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -16,7 +16,12 @@ public class QuestionEntity {
     @SequenceGenerator(name = "pk_sequence", sequenceName = "question_id_seq")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pk_sequence")
     @Column(name = "id", unique = true, nullable = false)
-    private int id;
+    private Integer id;
+
+    @Basic
+    @Column(name="parent_question")
+    private Integer parent;
+
     @Basic
     @Column(name = "question")
     private String question;
@@ -24,11 +29,9 @@ public class QuestionEntity {
     @Column(name = "type")
     private String type;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
-    @JoinColumn(name= "parent_question")
-    private QuestionEntity parent;
-    @OneToMany(mappedBy = "parent", fetch=FetchType.EAGER)
-    @MapKeyColumn(columnDefinition = "parent_question")
+    @OneToMany(fetch=FetchType.EAGER)
+    @JsonIgnore
+    @JoinColumn(name = "parent_question")
     private Set<QuestionEntity> answers;
 
     public int getId() {
@@ -55,16 +58,16 @@ public class QuestionEntity {
         this.type = type;
     }
 
-    public QuestionnaireEntity getQuestionnaire() {
-        return null;
-    }
-
-    public QuestionEntity getParent() {
+    public int getParent() {
         return parent;
     }
 
-    public void setParent(QuestionEntity parent) {
+    public void setParent(int parent) {
         this.parent = parent;
+    }
+
+    public QuestionnaireEntity getQuestionnaire() {
+        return null;
     }
 
     public Set<QuestionEntity> getAnswers() {
