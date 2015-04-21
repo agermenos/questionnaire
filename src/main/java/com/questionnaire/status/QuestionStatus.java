@@ -6,6 +6,6 @@ package com.questionnaire.status;
 public enum QuestionStatus {
     TEXT,
     MULTIPLE_CHOICE,
-    CHOICE;
+    SINGLE_CHOICE;
     private QuestionStatus(){}
 }

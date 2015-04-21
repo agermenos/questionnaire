@@ -38,10 +38,10 @@ public class QuestionnaireTest extends AbstractTest {
         questionnaire.addQuestion(createQuestion("How many fingers are in one hand?",null, QuestionStatus.TEXT));
         QuestionEntity outerQuestion = createQuestion("What's the capital of Mexico?", null, QuestionStatus.MULTIPLE_CHOICE);
         questionnaire.addQuestion(outerQuestion);
-        questionnaire.addQuestion(createQuestion("Estroncia", outerQuestion, QuestionStatus.CHOICE));
-        questionnaire.addQuestion(createQuestion("Santa Lucia", outerQuestion, QuestionStatus.CHOICE));
-        questionnaire.addQuestion(createQuestion("Guadalajara", outerQuestion, QuestionStatus.CHOICE));
-        questionnaire.addQuestion(createQuestion("Mexico City", outerQuestion, QuestionStatus.CHOICE));
+        questionnaire.addQuestion(createQuestion("Estroncia", outerQuestion, QuestionStatus.SINGLE_CHOICE));
+        questionnaire.addQuestion(createQuestion("Santa Lucia", outerQuestion, QuestionStatus.SINGLE_CHOICE));
+        questionnaire.addQuestion(createQuestion("Guadalajara", outerQuestion, QuestionStatus.SINGLE_CHOICE));
+        questionnaire.addQuestion(createQuestion("Mexico City", outerQuestion, QuestionStatus.SINGLE_CHOICE));
         UserEntity user = userDao.findByEmail("agermenos@gmail.com");
         questionnaire.setUser(user);
         questionnaireDao.add(questionnaire);
