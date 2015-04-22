@@ -1,0 +1,167 @@
+ <!DOCTYPE html>
+<html>
+
+<head>
+    <title>Add Manager</title>
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <style type="text/css">
+        /*       * Style tweaks       * --------------------------------------------------       */
+        body {
+            padding-top: 70px;
+        }
+        footer {
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+        /*       * Off Canvas       * --------------------------------------------------       */
+        @media screen and(max-width: 768px) {
+            .row-offcanvas {
+                position: relative;
+                -webkit-transition: all 0.25s ease-out;
+                -moz-transition: all 0.25s ease-out;
+                transition: all 0.25s ease-out;
+            }
+            .row-offcanvas-right .sidebar-offcanvas {
+                right: -50%;
+                /* 6 columns */
+            }
+            .row-offcanvas-left .sidebar-offcanvas {
+                left: -50%;
+                /* 6 columns */
+            }
+            .row-offcanvas-right.active {
+                right: 50%;
+                /* 6 columns */
+            }
+            .row-offcanvas-left.active {
+                left: 50%;
+                /* 6 columns */
+            }
+            .sidebar-offcanvas {
+                position: absolute;
+                top: 0;
+                width: 50%;
+                /* 6 columns */
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Ad Manager</a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a href="#">Home</a>
+                </li>
+                <li>
+                    <a href="#about">About</a>
+                </li>
+                <li>
+                    <a href="#contact">Contact Demo Creator</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /.nav-collapse -->
+    </div>
+    <!-- /.container -->
+</div>
+<!-- /.navbar -->
+<div class="container">
+    <div class="row row-offcanvas row-offcanvas-right">
+        <div class="col-xs-12 col-sm-9">
+            <p class="pull-right visible-xs">
+                <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button></p>
+            <div class="jumbotron">
+                <h1>Main Manager</h1>
+                <p>Select the ad you want to work with. You can edit the brand and ad status from the master selection. To edit the link, or choose more date, please go to the detail through the "edit" button.</p>
+            </div>
+            <div class="row">
+                <div >
+                    <div class="panel panel-default">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Date Created</th>
+                                <th>Brand</th>
+                                <th>Status</th>
+                                <th>Edit</th>
+                                <th>Link</th>
+                            </tr>
+                            </thead>
+                            <tbody data-bind="foreach: ads">
+                            <tr>
+                                <td hidden data-bind="text: id"></td>
+                                <td data-bind="text: name"></td>
+                                <td data-bind="text: date"></td>
+                                <td>
+                                    <select data-bind="options: $root.brands, value: brand, optionsText: 'text'"></select>
+                                </td>
+                                <td>
+                                    <select data-bind="options: $root.statuses, value: status, optionsText: 'text'"></select>
+                                </td>
+                                <td>
+                                    <button id="editBtn" type="button" data-bind="click: $root.editAd" class="btn btn-primary">
+                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> edit</button>
+                                </td>
+                                <td>
+                                    <button id="editBtn" type="button" data-bind="click: $root.getLink" class="btn btn-primary">
+                                        <span class="glyphicon glyphicon-cloud" aria-hidden="true"></span> get link</button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <input class="btn btn-default" type="button" value="Add Ad" data-bind="click: $root.addAd">
+                    </div>
+                </div>
+                <!--/span-->
+            </div>
+            <!--/row-->
+            <div class="row" id="modalWindow" style="display: none">
+                <div class="panel panel-default">
+                    <div class="form-group">
+                        <label class="control-label">Name</label>
+                        <div class="controls"><input type="text" id="name" class="form-control"data-bind="value:ad().name"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Link</label>
+                        <div class="controls"><textarea class="form-control" rows="5" id="comment" data-bind="value:ad().link"></textarea></div>
+                    </div>
+                    <input class="btn btn-default" id="cancelButton" type="button" value="Cancel" data-bind="click: $root.cancelEdit">
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!--/row-->
+    <hr>
+    <footer>
+        <p>&copy; US Media 2015</p>
+    </footer>
+</div>
+<!--/.container-->
+<script>
+    $(document).ready(function() {
+        $('[data-toggle=offcanvas]').click(function() {
+            $('.row-offcanvas').toggleClass('active');
+        });
+    });
+</script>
+</body>
+
+</html>
+
+<script type="text/javascript" src="../js/jquery-2.1.3.min.js"></script>
+<script type='text/javascript' src='../js/knockout-3.3.0.js'></script>
+<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+<script type='text/javascript' src='../js/ad_manager.js'></script>
