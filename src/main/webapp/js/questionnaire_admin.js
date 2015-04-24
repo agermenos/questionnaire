@@ -66,8 +66,7 @@ function QuestionnaireViewModel() {
         self.questionnaire(questionnaire);
         $("#modalWindow").fadeIn("slow");
         $("#cancelQuestionnaireButton").fadeIn("slow");
-        AJAX_LIB.callAJAX('http://localhost:8080/services/questions/1500', 'GET', null,  proceedEdit);
-
+        AJAX_LIB.callAJAX('http://localhost:8080/services/questions/50', 'GET', null,  proceedEdit);
     };
 
     self.updateMap = function(){
@@ -122,8 +121,20 @@ function QuestionnaireViewModel() {
     };
 }
 
+function fixQuestions(questions){
+    var i=0;
+    currentViewModel.id=0;
+    for (i;i<questions.length;i++){
+       var question = questions[i];
+       question.id = currentViewModel.nextId();
+    }
+    return questions;
+}
+
 function proceedEdit(data) {
     currentViewModel.updateMap();
+    data = fixQuestions(data);
+    currentViewModel.questions(data);
     $('#questionnaire_name').click(function() {
         $('#questionnaire_name').css('display', 'none');
 
