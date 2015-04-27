@@ -66,7 +66,7 @@ function QuestionnaireViewModel() {
         self.questionnaire(questionnaire);
         $("#modalWindow").fadeIn("slow");
         $("#cancelQuestionnaireButton").fadeIn("slow");
-        AJAX_LIB.callAJAX('http://localhost:8080/services/questions/50', 'GET', null,  proceedEdit);
+        AJAX_LIB.callAJAX('http://localhost:8080/services/questions/150', 'GET', null,  self.proceedEdit);
     };
 
     self.updateMap = function(){
@@ -119,37 +119,43 @@ function QuestionnaireViewModel() {
     self.removeAnswer=function(question, answer){
         question.answers.remove(answer);
     };
-}
 
-function fixQuestions(questions){
-    var i=0;
-    currentViewModel.id=0;
-    for (i;i<questions.length;i++){
-       var question = questions[i];
-       question.id = currentViewModel.nextId();
+    self.proceedEdit=function(data) {
+        currentViewModel.updateMap();
+        data = self.fixQuestions(JSON.parse(data));
+        currentViewModel.questions(data);
+        $('#questionnaire_name').click(function() {
+            $('#questionnaire_name').css('display', 'none');
+
+            $('#editable_questionnaire_name')
+                .val($('#questionnaire_name').text())
+                .css('display', '')
+                .focus();
+        });
+
+        $('#editable_questionnaire_name').blur(function() {
+            $('#editable_questionnaire_name').css('display', 'none');
+            $('#questionnaire_name')
+                .text($('#editable_questionnaire_name').val())
+                .css('display', '');
+        });
     }
-    return questions;
-}
 
-function proceedEdit(data) {
-    currentViewModel.updateMap();
-    data = fixQuestions(data);
-    currentViewModel.questions(data);
-    $('#questionnaire_name').click(function() {
-        $('#questionnaire_name').css('display', 'none');
 
-        $('#editable_questionnaire_name')
-            .val($('#questionnaire_name').text())
-            .css('display', '')
-            .focus();
-    });
-
-    $('#editable_questionnaire_name').blur(function() {
-        $('#editable_questionnaire_name').css('display', 'none');
-        $('#questionnaire_name')
-            .text($('#editable_questionnaire_name').val())
-            .css('display', '');
-    });
+    self.fixQuestions=function (questions){
+        var i=0;
+        var return_questions=[];
+        var answers=[];
+        currentViewModel.id=0;
+        for (i;i<questions.length;i++){
+            var question = questions[i];
+            if (question.answers.length>0) {
+                answers = self.fixQuestions(question.answers());
+            }
+            return_questions.push(new Question(question.id, question.parent, question.question, question.type, answers, currentViewModel.nextId()));
+        }
+        return return_questions;
+    }
 }
 
 function Question(id, parent, question, type, answers, idx){
