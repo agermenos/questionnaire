@@ -46,15 +46,7 @@ function QuestionnaireViewModel() {
         {id:5, name:"Fitness Test", date:"3/21/2015", status:self.statuses[0]}
     ]);
 
-    self.questions = ko.observableArray (
-        [new Question(50, null, "How many fingers are in one hand?", "TEXT", ko.observableArray([]), self.nextId()),
-            new Question(51, null, "What\u0027s the capital of Mexico?", "SINGLE_CHOICE", ko.observableArray([
-                new Question(54, 51, "Guadalajara","SINGLE_CHOICE", [],0),
-                new Question(55, 51,"Mexico City","SINGLE_CHOICE", [],0),
-                new Question(56, 51,"Santa Lucía","SINGLE_CHOICE", [],0),
-                new Question(57, 51,"Estroncia","SINGLE_CHOICE", [],0)]), self.nextId())
-        ]
-    )
+    self.questions=ko.observableArray([]);
 
     // Operations
     self.addQuestionnaire = function() {
@@ -66,7 +58,7 @@ function QuestionnaireViewModel() {
         self.questionnaire(questionnaire);
         $("#modalWindow").fadeIn("slow");
         $("#cancelQuestionnaireButton").fadeIn("slow");
-        AJAX_LIB.callAJAX('http://localhost:8080/services/questions/150', 'GET', null,  self.proceedEdit);
+        AJAX_LIB.callAJAX('http://localhost:8080/services/questions/1500', 'GET', null,  self.proceedEdit);
     };
 
     self.updateMap = function(){
@@ -79,37 +71,37 @@ function QuestionnaireViewModel() {
             });
             button.onclick = click_bind;
         });
-    }
+    };
 
     self.addTxtQuestion= function (){
         self.questions.push(new Question( 0, null, "New Text Question", "TEXT", ko.observableArray([]), self.nextId()));
         self.updateMap();
-    }
+    };
 
     self.addMOQuestion= function (){
         self.questions.push(new Question(0, null, "New Multiple Choice Question", "MULTIPLE_CHOICE", ko.observableArray([new Question(0,0,"Dummy", "MULTIPLE_CHOICE", [], 0)]), self.nextId()));
         self.updateMap();
-    }
+    };
 
     self.addSOQuestion= function (){
         self.questions.push(new Question(0, null, "New Single Choice Question", "SINGLE_CHOICE", ko.observableArray([new Question(0,0,"Dummy", "SINGLE_CHOICE", [], 0)]), self.nextId()));
         self.updateMap();
-    }
+    };
 
     self.removeQuestion = function(question){
         self.questions.remove(question);
         self.updateMap();
-    }
+    };
 
     self.addSOAnswer = function(question){
         question.answers.push(new Question(0, question.id, "new answer", "SINGLE_CHOICE", ko.observableArray([]), 0));
-    }
+    };
 
     self.addMOAnswer = function(question){
 
         question.answers.push(new Question(0, question.id, "new answer", "MULTIPLE_CHOICE", ko.observableArray([]), 0));
 
-    }
+    };
 
     self.cancelQuestionnaire=function(){
         $("#modalWindow").fadeOut();
@@ -121,9 +113,10 @@ function QuestionnaireViewModel() {
     };
 
     self.proceedEdit=function(data) {
-        currentViewModel.updateMap();
+        self.id=0;
         data = self.fixQuestions(JSON.parse(data));
-        currentViewModel.questions(data);
+        self.questions(data);
+        self.updateMap();
         $('#questionnaire_name').click(function() {
             $('#questionnaire_name').css('display', 'none');
 
@@ -139,20 +132,19 @@ function QuestionnaireViewModel() {
                 .text($('#editable_questionnaire_name').val())
                 .css('display', '');
         });
-    }
+    };
 
 
     self.fixQuestions=function (questions){
         var i=0;
         var return_questions=[];
         var answers=[];
-        currentViewModel.id=0;
         for (i;i<questions.length;i++){
             var question = questions[i];
-            if (question.answers.length>0) {
-                answers = self.fixQuestions(question.answers());
+            if (question.answers && question.answers.length>0) {
+                answers = self.fixQuestions(question.answers);
             }
-            return_questions.push(new Question(question.id, question.parent, question.question, question.type, answers, currentViewModel.nextId()));
+            return_questions.push(new Question(question.id, question.parent, question.question, question.type, ko.observableArray(answers), currentViewModel.nextId()));
         }
         return return_questions;
     }
