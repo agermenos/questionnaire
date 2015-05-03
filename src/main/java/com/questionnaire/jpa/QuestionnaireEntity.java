@@ -27,9 +27,9 @@ public class QuestionnaireEntity {
     @Basic
     @Column(name = "status")
     private String status;
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity user;
+    @Basic
+    @Column(name = "user_id")
+    private int userId;
     @OneToMany(fetch = FetchType.EAGER, cascade={CascadeType.ALL})
     @JoinColumn(name="questionnaire_id")
     private List<QuestionEntity> questions;
@@ -75,12 +75,12 @@ public class QuestionnaireEntity {
         this.status = status;
     }
 
-    public UserEntity getUser() {
-        return user;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUser(UserEntity user) {
-        this.user = user;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public List<QuestionEntity> getQuestions() {
@@ -112,7 +112,6 @@ public class QuestionnaireEntity {
         if (!name.equals(that.name)) return false;
         if (questions != null ? !questions.equals(that.questions) : that.questions != null) return false;
         if (!status.equals(that.status)) return false;
-        if (!user.equals(that.user)) return false;
 
         return true;
     }
@@ -124,7 +123,6 @@ public class QuestionnaireEntity {
         result = 31 * result + created.hashCode();
         result = 31 * result + (modified != null ? modified.hashCode() : 0);
         result = 31 * result + status.hashCode();
-        result = 31 * result + user.hashCode();
         return result;
     }
 
@@ -136,7 +134,7 @@ public class QuestionnaireEntity {
                 ", created='" + created + '\'' +
                 ", modified='" + modified + '\'' +
                 ", status='" + status + '\'' +
-                ", user=" + user +
+                ", userId=" + userId +
                // ", \nquestions=" + questions +
                 "}";
     }

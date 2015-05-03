@@ -36,6 +36,11 @@ public class QuestionnaireServices {
     }
 
     @Transactional
+    public List<QuestionnaireEntity> getQuestionsByUserId(int userId){
+        return questionnaireDao.findByUser(userId);
+    }
+
+    @Transactional
     public void publishQuestionnaire(int questionnaireId){
         QuestionnaireEntity questionnaire = questionnaireDao.findById(questionnaireId);
         if (questionnaire.getQuestions()!=null){
@@ -45,7 +50,7 @@ public class QuestionnaireServices {
 
     @Transactional
     public void storeQuestionnaire(QuestionnaireEntity questionnaire, int userId){
-        questionnaire.setUser(userDao.findById(userId));
+        questionnaire.setUserId(userId);
         if (questionnaire.getId()==0) {
             questionnaire.setCreated(new Date().toString());
             questionnaire.setModified(new Date().toString());

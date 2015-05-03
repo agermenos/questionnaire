@@ -46,11 +46,10 @@ public class QuestionnaireDao {
 
     @Transactional
     public List<QuestionnaireEntity> findByUser(int userId){
-        Criteria criteria = sessionFactory.
-                getCurrentSession().
-                createCriteria(UserEntity.class);
-        criteria.add(Restrictions.like("user", "%" + userId + "%"));
-        return criteria.list();
+        SQLQuery query = sessionFactory.getCurrentSession().createSQLQuery("" +
+                "SELECT * FROM questionnaire WHERE user_id=" + userId);
+        query.addEntity(QuestionnaireEntity.class);
+        return query.list();
     }
 
     @Transactional
@@ -58,6 +57,7 @@ public class QuestionnaireDao {
         SQLQuery query = sessionFactory.getCurrentSession().createSQLQuery("" +
                 "SELECT * FROM question WHERE questionnaire_id=" + questionnaireId +
                 " AND parent_question is NULL");
+
         query.addEntity(QuestionEntity.class);
         return query.list();
     }

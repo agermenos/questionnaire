@@ -58,7 +58,7 @@ function QuestionnaireViewModel() {
         self.questionnaire(questionnaire);
         $("#modalWindow").fadeIn("slow");
         $("#cancelQuestionnaireButton").fadeIn("slow");
-        AJAX_LIB.callAJAX('http://localhost:8080/services/questions/1500', 'GET', null,  self.proceedEdit);
+        AJAX_LIB.callAJAX('http://localhost:8080/services/questions/150', 'GET', null,  self.proceedEdit);
     };
 
     self.updateMap = function(){

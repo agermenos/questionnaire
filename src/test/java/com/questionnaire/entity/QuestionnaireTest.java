@@ -43,7 +43,7 @@ public class QuestionnaireTest extends AbstractTest {
         questionnaire.addQuestion(createQuestion("Guadalajara", outerQuestion, QuestionStatus.SINGLE_CHOICE));
         questionnaire.addQuestion(createQuestion("Mexico City", outerQuestion, QuestionStatus.SINGLE_CHOICE));
         UserEntity user = userDao.findByEmail("agermenos@gmail.com");
-        questionnaire.setUser(user);
+        questionnaire.setUserId(user.getId());
         questionnaireDao.add(questionnaire);
     }
 
