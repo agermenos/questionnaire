@@ -24,6 +24,7 @@ function QuestionnaireViewModel() {
     };
 
     self.user= {
+        id:50,
         name:"Alejandro",
         lastName:"Germenos",
         email:"agermenos@gmail.com"
@@ -38,13 +39,7 @@ function QuestionnaireViewModel() {
 
     self.questionnaire=ko.observable(new Questionnaire(0,"new questionnaire", null, self.statuses[0]));
 
-    self.questionnaires= ko.observableArray([
-        {id:1, name:"My test Questionnaire", date:"3/21/2015", status:self.statuses[0]},
-        {id:2, name:"Cities of Mexico", date:"3/21/2015", status:self.statuses[1]},
-        {id:3, name:"Cities of California", date:"3/21/2015", status:self.statuses[2]},
-        {id:4, name:"Age Test", date:"3/21/2015", status:self.statuses[3]},
-        {id:5, name:"Fitness Test", date:"3/21/2015", status:self.statuses[0]}
-    ]);
+    self.questionnaires= ko.observableArray([]);
 
     self.questions=ko.observableArray([]);
 
@@ -58,7 +53,7 @@ function QuestionnaireViewModel() {
         self.questionnaire(questionnaire);
         $("#modalWindow").fadeIn("slow");
         $("#cancelQuestionnaireButton").fadeIn("slow");
-        AJAX_LIB.callAJAX('http://localhost:8080/services/questions/150', 'GET', null,  self.proceedEdit);
+        AJAX_LIB.callAJAX('http://localhost:8080/services/questions/'+questionnaire.id, 'GET', null,  self.loadQuestions);
     };
 
     self.updateMap = function(){
@@ -112,7 +107,11 @@ function QuestionnaireViewModel() {
         question.answers.remove(answer);
     };
 
-    self.proceedEdit=function(data) {
+    self.loadQuestionnaire=function(data){
+        self.questionnaires(JSON.parse(data));
+    }
+
+    self.loadQuestions=function(data) {
         self.id=0;
         data = self.fixQuestions(JSON.parse(data));
         self.questions(data);
@@ -165,9 +164,10 @@ function Questionnaire(id, name, date, status) {
     var self = this;
     self.id = id;
     self.name = name;
-    self.date = date?date:createNewDate();
+    self.created = date?date:createNewDate();
     self.status = ko.observable(status);
 }
 
 var currentViewModel =new QuestionnaireViewModel();
 ko.applyBindings(currentViewModel);
+AJAX_LIB.callAJAX('http://localhost:8080/services/questionnaire/50', 'GET', null,  currentViewModel.loadQuestionnaire);
