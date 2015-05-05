@@ -43,6 +43,16 @@ function QuestionnaireViewModel() {
 
     self.questions=ko.observableArray([]);
 
+    self.messenger=function(message, type){
+        $.notify({
+            // options
+            message: message
+        },{
+            // settings
+            type: type
+        });
+    };
+
     // Operations
     self.addQuestionnaire = function() {
         self.questionnaires.push(new Questionnaire(0, "new questionnaire", null, self.statuses[0]));
@@ -98,6 +108,10 @@ function QuestionnaireViewModel() {
 
     };
 
+    self.storeQuestionnaire=function(){
+        AJAX_LIB.callAJAX('http://localhost:8080/services/questionnaire/' + self.questionnaire().id , 'PUT', self.questions(), function() {self.messenger("Questionnaire uploaded", "success"); } );
+    };
+
     self.cancelQuestionnaire=function(){
         $("#modalWindow").fadeOut();
         $("#cancelQuestionnaireButton").fadeOut();
@@ -109,7 +123,7 @@ function QuestionnaireViewModel() {
 
     self.loadQuestionnaire=function(data){
         self.questionnaires(JSON.parse(data));
-    }
+    };
 
     self.loadQuestions=function(data) {
         self.id=0;
@@ -170,4 +184,4 @@ function Questionnaire(id, name, date, status) {
 
 var currentViewModel =new QuestionnaireViewModel();
 ko.applyBindings(currentViewModel);
-AJAX_LIB.callAJAX('http://localhost:8080/services/questionnaire/50', 'GET', null,  currentViewModel.loadQuestionnaire);
+AJAX_LIB.callAJAX('http://localhost:8080/services/questionnaire/100', 'GET', null,  currentViewModel.loadQuestionnaire);

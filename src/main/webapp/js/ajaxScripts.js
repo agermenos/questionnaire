@@ -5,6 +5,10 @@ var AJAX_LIB = function () {
     return {
         callAJAX : function (url, type, params, callBack) {
             var request = $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
                 url: url,
                 type: type,
                 data: params,

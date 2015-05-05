@@ -9,10 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -40,10 +37,19 @@ public class QuestionnaireRest {
 
     @RequestMapping(value="/{id}", method = RequestMethod.PUT)
     public @ResponseBody
-    String addQuestions(@PathVariable int id, Model model) {
+    String updateQuestion(@PathVariable int id, @RequestBody QuestionnaireEntity questionnaire) {
+        //QuestionnaireEntity questionnaire = questionnaireServices.getQuestionnaireById(id);
+        //questionnaire.setQuestions(questions);
+        //questionnaireServices.storeQuestionnaire(questionnaire);
+        return null;
+    }
+
+    @RequestMapping(value="/{id}", method = RequestMethod.POST)
+    public @ResponseBody
+    String addQuestionnaire(@PathVariable int id, Model model) {
         QuestionnaireEntity questionnaire = questionnaireServices.getQuestionnaireById(id);
-      //  questionnaire.setQuestions(questions);
-      //  questionnaireServices.storeQuestionnaire(questionnaire);
+        //  questionnaire.setQuestions(questions);
+        //  questionnaireServices.storeQuestionnaire(questionnaire);
         return null;
     }
 

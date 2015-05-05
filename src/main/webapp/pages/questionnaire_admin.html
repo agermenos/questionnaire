@@ -115,7 +115,7 @@
                             </tbody>
                         </table>
                         <input class="btn btn-default" type="button" id="addQuestionnaireButton" value="Add Questionnaire"
-                               data-bind="click: addQuestionnaire"/>
+                               data-bind="click: $root.addQuestionnaire"/>
                     </div>
 
             </div>
@@ -145,13 +145,6 @@
                                             <span class="input-group-btn">
                                                 <span data-bind="if: type=='MULTIPLE_CHOICE'"> <button type="button" data-bind="click: $root.addMOAnswer" class="btn btn-default">Add Answer</button></span>
                                                 <span data-bind="if: type=='SINGLE_CHOICE'"> <button type="button" data-bind="click: $root.addSOAnswer" class="btn btn-default">Add Answer</button> </span>
-                                                <!-- <button type="button" class="btn btn-default dropdown-toggle" data-bind="visible:answers().length>0" data-toggle="dropdown" aria-expanded="false">Add Answer <span class="caret"></span></button>
-                                                <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                                                    <li data-bind="click: $root.addSOAnswer"><a role="menuitem" tabindex="-1" href="#"><span
-                                                            class="glyphicon glyphicon-record"></span> Single Option Answer</a></li>
-                                                    <li data-bind="click: $root.addMOAnswer"><a role="menuitem" tabindex="-1" href="#"><span
-                                                            class="glyphicon glyphicon-check"></span> Multiple Option Answer</a></li>
-                                                </ul> -->
                                                 <button type="button" class="btn btn-default" aria-expanded="false" data-bind="click: $root.removeQuestion">Remove</button>
                                             </span>
                                         </div>
@@ -191,8 +184,10 @@
                     </div>
 
 
-                    <input class="btn btn-default" type="button" id="cancelQuestionnaireButton" value="Cancel"
-                           data-bind="click: cancelQuestionnaire" style="display:none"/>
+                <input class="btn btn-default" type="button" id="cancelQuestionnaireButton" value="Cancel"
+                           data-bind="click: cancelQuestionnaire" />
+                <input class="btn btn-default" type="button" id="$root.storeQuestionnaireButton.bind($data)" value="Store"
+                       data-bind="click: storeQuestionnaire" />
                 </div>
             </div>
         <!--/span-->
@@ -239,5 +234,6 @@
 <script type="text/javascript" src="../js/jquery-2.1.3.min.js"></script>
 <script type='text/javascript' src='../js/knockout-3.3.0.js'></script>
 <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../js/bootstrap-notify.min.js"></script>
 <script type="text/javascript" src="../js/ajaxScripts.js"></script>
 <script type='text/javascript' src='../js/questionnaire_admin.js'></script>
