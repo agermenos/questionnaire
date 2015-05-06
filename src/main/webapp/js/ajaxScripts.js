@@ -17,8 +17,14 @@ var AJAX_LIB = function () {
             request.done(function(msg) {
                 callBack(msg);
             });
-            request.fail(function() {
-                console.log( "error" );
+            request.fail(function(msg) {
+                $.notify({
+                    // options
+                    message: 'Error: ' + msg.statusText
+                },{
+                    // settings
+                    type: 'danger'
+                });
 
             });
             request.always(function() {

@@ -109,7 +109,8 @@ function QuestionnaireViewModel() {
     };
 
     self.storeQuestionnaire=function(){
-        AJAX_LIB.callAJAX('http://localhost:8080/services/questionnaire/' + self.questionnaire().id , 'PUT', self.questions(), function() {self.messenger("Questionnaire uploaded", "success"); } );
+        var jsonQs = ko.toJSON(self.questions);
+        AJAX_LIB.callAJAX('http://localhost:8080/services/questionnaire/' + self.questionnaire().id , 'PUT', jsonQs, function() {self.messenger("Questionnaire uploaded", "success"); } );
     };
 
     self.cancelQuestionnaire=function(){

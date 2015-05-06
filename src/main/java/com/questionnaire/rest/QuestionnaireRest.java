@@ -1,6 +1,7 @@
 package com.questionnaire.rest;
 
 import com.google.gson.Gson;
+import com.questionnaire.jpa.QuestionEntity;
 import com.questionnaire.jpa.QuestionnaireEntity;
 import com.questionnaire.services.QuestionnaireServices;
 import jdk.nashorn.internal.ir.RuntimeNode;
@@ -37,7 +38,13 @@ public class QuestionnaireRest {
 
     @RequestMapping(value="/{id}", method = RequestMethod.PUT)
     public @ResponseBody
-    String updateQuestion(@PathVariable int id, @RequestBody QuestionnaireEntity questionnaire) {
+    String updateQuestion(@PathVariable int id, @RequestBody String jsonQuestionnaire) {
+        QuestionEntity questions[] = gson.fromJson(jsonQuestionnaire, QuestionEntity[].class);
+        for (QuestionEntity question:questions){
+            if (question.getId()==0 || question.getId()==null) {
+                //questionnaireServices.
+            }
+        }
         //QuestionnaireEntity questionnaire = questionnaireServices.getQuestionnaireById(id);
         //questionnaire.setQuestions(questions);
         //questionnaireServices.storeQuestionnaire(questionnaire);

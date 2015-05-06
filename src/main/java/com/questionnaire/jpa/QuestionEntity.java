@@ -34,7 +34,7 @@ public class QuestionEntity {
     @JoinColumn(name = "parent_question")
     private Set<QuestionEntity> answers;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
