@@ -20,6 +20,7 @@ var AJAX_LIB = function () {
             request.fail(function(msg) {
                 $.notify({
                     // options
+                    icon: 'glyphicon glyphicon-thumbs-down',
                     message: 'Error: ' + msg.statusText
                 },{
                     // settings

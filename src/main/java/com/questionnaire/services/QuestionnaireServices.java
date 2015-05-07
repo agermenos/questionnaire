@@ -49,6 +49,16 @@ public class QuestionnaireServices {
     }
 
     @Transactional
+    public void saveQuestion(QuestionEntity question){
+        if (question.getId()==null || question.getId()==0) {
+            questionDao.add(question);
+        }
+        else {
+            questionDao.update(question);
+        }
+    }
+
+    @Transactional
     public void storeQuestionnaire(QuestionnaireEntity questionnaire, int userId){
         questionnaire.setUserId(userId);
         if (questionnaire.getId()==0) {

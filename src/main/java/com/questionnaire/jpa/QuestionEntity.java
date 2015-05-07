@@ -34,6 +34,10 @@ public class QuestionEntity {
     @JoinColumn(name = "parent_question")
     private Set<QuestionEntity> answers;
 
+    @Basic
+    @Column(name = "questionnaire_id")
+    private Integer questionnaireId;
+
     public Integer getId() {
         return id;
     }
@@ -56,6 +60,14 @@ public class QuestionEntity {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public Integer getQuestionnaireId() {
+        return questionnaireId;
+    }
+
+    public void setQuestionnaireId(Integer questionnaireId) {
+        this.questionnaireId = questionnaireId;
     }
 
     public int getParent() {
@@ -91,7 +103,7 @@ public class QuestionEntity {
                 "id:" + id +
                 ", question:\"" + question + '\"' +
                 ", type:\"" + type + '\"' +
-                //", questions=" + questions +
+                ", questionnaire id=" + questionnaireId +
                 ", answers:" + answers +
                 '}';
     }

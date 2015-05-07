@@ -43,9 +43,10 @@ function QuestionnaireViewModel() {
 
     self.questions=ko.observableArray([]);
 
-    self.messenger=function(message, type){
+    self.messenger=function(message, type, icon){
         $.notify({
             // options
+            icon: 'glyphicon '+icon,
             message: message
         },{
             // settings
@@ -79,17 +80,17 @@ function QuestionnaireViewModel() {
     };
 
     self.addTxtQuestion= function (){
-        self.questions.push(new Question( 0, null, "New Text Question", "TEXT", ko.observableArray([]), self.nextId()));
+        self.questions.push(new Question( null, null, "New Text Question", "TEXT", ko.observableArray([]), self.nextId(), self.questionnaire.id));
         self.updateMap();
     };
 
     self.addMOQuestion= function (){
-        self.questions.push(new Question(0, null, "New Multiple Choice Question", "MULTIPLE_CHOICE", ko.observableArray([new Question(0,0,"Dummy", "MULTIPLE_CHOICE", [], 0)]), self.nextId()));
+        self.questions.push(new Question(null, null, "New Multiple Choice Question", "MULTIPLE_CHOICE", ko.observableArray([new Question(0,0,"Dummy", "MULTIPLE_CHOICE", [], 0, self.questionnaire().id)]), self.nextId(), self.questionnaire().id));
         self.updateMap();
     };
 
     self.addSOQuestion= function (){
-        self.questions.push(new Question(0, null, "New Single Choice Question", "SINGLE_CHOICE", ko.observableArray([new Question(0,0,"Dummy", "SINGLE_CHOICE", [], 0)]), self.nextId()));
+        self.questions.push(new Question(null, null, "New Single Choice Question", "SINGLE_CHOICE", ko.observableArray([new Question(0,0,"Dummy", "SINGLE_CHOICE", [], 0, self.questionnaire().id)]), self.nextId(), self.questionnaire().id));
         self.updateMap();
     };
 
@@ -99,18 +100,18 @@ function QuestionnaireViewModel() {
     };
 
     self.addSOAnswer = function(question){
-        question.answers.push(new Question(0, question.id, "new answer", "SINGLE_CHOICE", ko.observableArray([]), 0));
+        question.answers.push(new Question(null, question.id, "new answer", "SINGLE_CHOICE", ko.observableArray([]), 0, self.questionnaire().id));
     };
 
     self.addMOAnswer = function(question){
 
-        question.answers.push(new Question(0, question.id, "new answer", "MULTIPLE_CHOICE", ko.observableArray([]), 0));
+        question.answers.push(new Question(null, question.id, "new answer", "MULTIPLE_CHOICE", ko.observableArray([]), 0, self.questionnaire().id));
 
     };
 
     self.storeQuestionnaire=function(){
         var jsonQs = ko.toJSON(self.questions);
-        AJAX_LIB.callAJAX('http://localhost:8080/services/questionnaire/' + self.questionnaire().id , 'PUT', jsonQs, function() {self.messenger("Questionnaire uploaded", "success"); } );
+        AJAX_LIB.callAJAX('http://localhost:8080/services/questionnaire/' + self.questionnaire().id , 'PUT', jsonQs, function() {self.messenger("Questionnaire uploaded", "success", "glyphicon-thumbs-up"); } );
     };
 
     self.cancelQuestionnaire=function(){
@@ -158,13 +159,13 @@ function QuestionnaireViewModel() {
             if (question.answers && question.answers.length>0) {
                 answers = self.fixQuestions(question.answers);
             }
-            return_questions.push(new Question(question.id, question.parent, question.question, question.type, ko.observableArray(answers), currentViewModel.nextId()));
+            return_questions.push(new Question(question.id, question.parent, question.question, question.type, ko.observableArray(answers), currentViewModel.nextId(), question.questionnaireId));
         }
         return return_questions;
     }
 }
 
-function Question(id, parent, question, type, answers, idx){
+function Question(id, parent, question, type, answers, idx, questionnaireId){
     var self=this;
     self.id = id;
     self.question = question;
@@ -172,6 +173,7 @@ function Question(id, parent, question, type, answers, idx){
     self.parent = parent;
     self.answers =answers;
     self.idx = idx;
+    self.questionnaireId = questionnaireId;
 }
 
 // Class to represent a row in the seat reservations grid
