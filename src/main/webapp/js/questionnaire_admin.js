@@ -62,9 +62,13 @@ function QuestionnaireViewModel() {
 
     self.editQuestionnaire = function(questionnaire) {
         self.questionnaire(questionnaire);
-        $("#modalWindow").fadeIn("slow");
-        $("#cancelQuestionnaireButton").fadeIn("slow");
+        //self.questions (self.questionnaire().questions);
         AJAX_LIB.callAJAX('http://localhost:8080/services/questions/'+questionnaire.id, 'GET', null,  self.loadQuestions);
+        self.updateMap();
+        $("#modalWindow").fadeIn("slow");
+        //$("#cancelQuestionnaireButton").fadeIn("slow");
+        //
+
     };
 
     self.updateMap = function(){
@@ -187,4 +191,4 @@ function Questionnaire(id, name, date, status) {
 
 var currentViewModel =new QuestionnaireViewModel();
 ko.applyBindings(currentViewModel);
-AJAX_LIB.callAJAX('http://localhost:8080/services/questionnaire/100', 'GET', null,  currentViewModel.loadQuestionnaire);
+AJAX_LIB.callAJAX('http://localhost:8080/services/questionnaire/50', 'GET', null,  currentViewModel.loadQuestionnaire);
