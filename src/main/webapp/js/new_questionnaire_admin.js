@@ -14,31 +14,47 @@ QUESTIONNAIRE_admin  = (function () {
         {id:"DISABLED", text:"disabled"}
     ];
 
-    return {
-        message: function(message, type, icon){
-            $.notify({
-                // options
-                icon: 'glyphicon '+icon,
-                message: message
-            },{
-                // settings
-                type: type
-            });
-        },
-
-        setClicks : function(){
-            $("#iem_menu_subscribe").click(function(){$("#iem_subscriptions_modal").modal();});
-            $("#iem_subscribe_addSource").click(function(){$("#iem_susbscribe_sourceSpan").show();});
-            $("#iem_subscribe_register").click(function(){console.log("Registering...");});
-            $("#iem_subscribe_test").click(function(){console.log("Testing service."); IEM_subscription.testService();});
-        },
-
-        getNextId : function() {
-            if (!QUESTIONNAIRE_admin.id) {
-                QUESTIONNAIRE_admin.id = 0;
+    var fixQuestions= function (questions){
+        var i=0;
+        var return_questions=[];
+        var answers=[];
+        for (i;i<questions.length;i++){
+            var question = questions[i];
+            if (question.answers && question.answers.length>0) {
+                answers = QUESTIONNAIRE_admin.fixQuestions(question.answers);
             }
-            return (++QUESTIONNAIRE_admin.id);
-        },
+            return_questions.push(new Question(question.id, question.parent, question.question, question.type, ko.observableArray(answers), currentViewModel.nextId(), question.questionnaireId));
+        }
+        return return_questions;
+    };
+
+    var message= function(message, type, icon){
+        $.notify({
+            // options
+            icon: 'glyphicon '+icon,
+            message: message
+        },{
+            // settings
+            type: type
+        });
+    };
+
+    var setClicks = function(){
+        $("#iem_menu_subscribe").click(function(){$("#iem_subscriptions_modal").modal();});
+        $("#iem_subscribe_addSource").click(function(){$("#iem_susbscribe_sourceSpan").show();});
+        $("#iem_subscribe_register").click(function(){console.log("Registering...");});
+        $("#iem_subscribe_test").click(function(){console.log("Testing service."); IEM_subscription.testService();});
+    };
+
+    var getNextId = function() {
+        if (!QUESTIONNAIRE_admin.id) {
+            QUESTIONNAIRE_admin.id = 0;
+        }
+        return (++QUESTIONNAIRE_admin.id);
+    };
+
+    return {
+
 
         validateForm: function(){
             var return_value=true;
@@ -158,21 +174,6 @@ QUESTIONNAIRE_admin  = (function () {
                     .text($('#editable_questionnaire_name').val())
                     .css('display', '');
             });
-        },
-    
-    
-        fixQuestions:function (questions){
-            var i=0;
-            var return_questions=[];
-            var answers=[];
-            for (i;i<questions.length;i++){
-                var question = questions[i];
-                if (question.answers && question.answers.length>0) {
-                    answers = QUESTIONNAIRE_admin.fixQuestions(question.answers);
-                }
-                return_questions.push(new Question(question.id, question.parent, question.question, question.type, ko.observableArray(answers), currentViewModel.nextId(), question.questionnaireId));
-            }
-            return return_questions;
         },
 
         Question: function (id, parent, question, type, answers, idx, questionnaireId){
