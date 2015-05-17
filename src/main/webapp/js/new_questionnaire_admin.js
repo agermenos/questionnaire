@@ -1,10 +1,12 @@
 /**
  * Created by Alejandro on 5/13/2015.
  */
+
+data = '[{"id":50,"name":"Basic Questionnaire","created":"Thu Feb 12 12:34:03 PST 2015","modified":"Thu Feb 12 12:34:03 PST 2015","status":"CREATED","userId":50,"questions":[{"id":50,"question":"How many fingers are in one hand?","type":"TEXT","answers":[],"questionnaireId":50},{"id":51,"question":"What\u0027s the capital of Mexico?","type":"MULTIPLE_CHOICE","answers":[{"id":55,"parent":51,"question":"Mexico City","type":"CHOICE","answers":[]},{"id":53,"parent":51,"question":"Santa Lucia","type":"CHOICE","answers":[]},{"id":54,"parent":51,"question":"Guadalajara","type":"CHOICE","answers":[]},{"id":52,"parent":51,"question":"Estroncia","type":"CHOICE","answers":[]}],"questionnaireId":50}]}]';
 QUESTIONNAIRE_admin  = (function () {
     $( document ).ready(function() {
-        QUESTIONNAIRE_admin.setClicks();
-        $("#iem_susbscribe_sourceSpan").hide();
+        QUESTIONNAIRE_admin.loadQuestionnaire(data);
+        ko.applyBindings(QUESTIONNAIRE_admin);
     });
 
     statuses = [
@@ -21,11 +23,23 @@ QUESTIONNAIRE_admin  = (function () {
         for (i;i<questions.length;i++){
             var question = questions[i];
             if (question.answers && question.answers.length>0) {
-                answers = QUESTIONNAIRE_admin.fixQuestions(question.answers);
+                answers = fixQuestions(question.answers);
             }
-            return_questions.push(new Question(question.id, question.parent, question.question, question.type, ko.observableArray(answers), currentViewModel.nextId(), question.questionnaireId));
+            return_questions.push(new Question(question.id, question.parent,
+                question.question, question.type, ko.observableArray(answers),
+                getNextId(), question.questionnaireId));
         }
         return return_questions;
+    };
+
+    var updateMap = function(){
+        QUESTIONNAIRE_admin.questions().map(function(obj){
+            obj.idx = getNextId();
+            var button = document.getElementById('bind_'+obj.idx);
+            button.onclick = (function(){
+                return $('#'+obj.idx).toggle();
+            });
+        });
     };
 
     var message= function(message, type, icon){
@@ -53,9 +67,31 @@ QUESTIONNAIRE_admin  = (function () {
         return (++QUESTIONNAIRE_admin.id);
     };
 
+    var questionnaire= ko.observable(new Object);
+    var questions = ko.observable([]);
+
+    var Question= function (id, parent, question, type, answers, idx, questionnaireId){
+        QUESTIONNAIRE_admin.id = id;
+        QUESTIONNAIRE_admin.question = question;
+        QUESTIONNAIRE_admin.type = type;
+        QUESTIONNAIRE_admin.parent = parent;
+        QUESTIONNAIRE_admin.answers =answers;
+        QUESTIONNAIRE_admin.idx = idx;
+        QUESTIONNAIRE_admin.questionnaireId = questionnaireId;
+    };
+
+    var Questionnaire= function (id, name, date, status) {
+        var QUESTIONNAIRE_admin = this;
+        QUESTIONNAIRE_admin.id = id;
+        QUESTIONNAIRE_admin.name = name;
+        QUESTIONNAIRE_admin.created = date?date:createNewDate();
+        QUESTIONNAIRE_admin.status = ko.observable(status);
+    };
+
     return {
 
-
+        questionnaire:questionnaire,
+        questions:questions,
         validateForm: function(){
             var return_value=true;
             $("[required]").each(function(i){
@@ -87,25 +123,13 @@ QUESTIONNAIRE_admin  = (function () {
     
         editQuestionnaire : function(questionnaire) {
             QUESTIONNAIRE_admin.questionnaire(questionnaire);
-            //QUESTIONNAIRE_admin.questions (QUESTIONNAIRE_admin.questionnaire().questions);
-            AJAX_LIB.callAJAX('http://localhost:8080/services/questions/'+questionnaire.id, 'GET', null,  QUESTIONNAIRE_admin.loadQuestions);
-            QUESTIONNAIRE_admin.updateMap();
+            QUESTIONNAIRE_admin.questions= ko.observable(QUESTIONNAIRE_admin.questionnaire().questions);
+            //AJAX_LIB.callAJAX('http://localhost:8080/services/questions/'+questionnaire.id, 'GET', null,  QUESTIONNAIRE_admin.loadQuestions);
+            updateMap();
             $("#modalWindow").fadeIn("slow");
             //$("#cancelQuestionnaireButton").fadeIn("slow");
             //
     
-        },
-    
-        updateMap : function(){
-            QUESTIONNAIRE_admin.questions().map(function(obj){
-                obj.idx;
-                var button = document.getElementById('bind_'+obj.idx);
-    
-                click_bind = (function(){
-                    return $('#'+obj.idx).toggle();
-                });
-                button.onclick = click_bind;
-            });
         },
     
         addTxtQuestion: function (){
@@ -129,11 +153,11 @@ QUESTIONNAIRE_admin  = (function () {
         },
     
         addSOAnswer : function(question){
-            question.answers.push(new Question(null, question.id, "new answer", "SINGLE_CHOICE", ko.observableArray([]), 0, QUESTIONNAIRE_admin.questionnaire().id));
+            question.answers.push(new Question(null, null, "new answer", "SINGLE_CHOICE", ko.observableArray([]), 0, QUESTIONNAIRE_admin.questionnaire().id));
         },
     
         addMOAnswer : function(question) {
-            question.answers.push(new Question(null, question.id, "new answer", "MULTIPLE_CHOICE", ko.observableArray([]), 0, QUESTIONNAIRE_admin.questionnaire().id));
+            question.answers.push(new Question(null, null, "new answer", "MULTIPLE_CHOICE", ko.observableArray([]), 0, QUESTIONNAIRE_admin.questionnaire().id));
         },
     
         storeQuestionnaire:function(){
@@ -151,12 +175,13 @@ QUESTIONNAIRE_admin  = (function () {
         },
     
         loadQuestionnaire: function(data){
-            QUESTIONNAIRE_admin.questionnaires(JSON.parse(data));
+            QUESTIONNAIRE_admin.questionnaires = ko.observable(JSON.parse(data));
+            console.log (QUESTIONNAIRE_admin.questionnaires());
         },
     
         loadQuestions: function(data) {
             QUESTIONNAIRE_admin.id=0;
-            data = QUESTIONNAIRE_admin.fixQuestions(JSON.parse(data));
+            data = fixQuestions(JSON.parse(data));
             QUESTIONNAIRE_admin.questions(data);
             QUESTIONNAIRE_admin.updateMap();
             $('#questionnaire_name').click(function() {
@@ -174,24 +199,6 @@ QUESTIONNAIRE_admin  = (function () {
                     .text($('#editable_questionnaire_name').val())
                     .css('display', '');
             });
-        },
-
-        Question: function (id, parent, question, type, answers, idx, questionnaireId){
-            QUESTIONNAIRE_admin.id = id;
-            QUESTIONNAIRE_admin.question = question;
-            QUESTIONNAIRE_admin.type = type;
-            QUESTIONNAIRE_admin.parent = parent;
-            QUESTIONNAIRE_admin.answers =answers;
-            QUESTIONNAIRE_admin.idx = idx;
-            QUESTIONNAIRE_admin.questionnaireId = questionnaireId;
-        },
-
-        Questionnaire: function (id, name, date, status) {
-            var QUESTIONNAIRE_admin = this;
-            QUESTIONNAIRE_admin.id = id;
-            QUESTIONNAIRE_admin.name = name;
-            QUESTIONNAIRE_admin.created = date?date:createNewDate();
-            QUESTIONNAIRE_admin.status = ko.observable(status);
         }
 
     };
