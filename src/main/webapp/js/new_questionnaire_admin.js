@@ -117,15 +117,30 @@ QUESTIONNAIRE_admin  = (function () {
             QUESTIONNAIRE_admin.questionnaires.push(new Questionnaire(0, "new questionnaire", null, QUESTIONNAIRE_admin.statuses[0]));
         },        
         
-        removeQuestionnaire : function(questionnaire) { 
-            QUESTIONNAIRE_admin.questionnaires.remove(questionnaire) 
+        removeQuestionnaire : function(questionnaire) {
+            QUESTIONNAIRE_admin.questionnaires.remove(questionnaire)
         },
     
         editQuestionnaire : function(questionnaire) {
-            QUESTIONNAIRE_admin.questionnaire(questionnaire);
+            QUESTIONNAIRE_admin.questionnaire= ko.observable(questionnaire);
             QUESTIONNAIRE_admin.questions= ko.observable(QUESTIONNAIRE_admin.questionnaire().questions);
             //AJAX_LIB.callAJAX('http://localhost:8080/services/questions/'+questionnaire.id, 'GET', null,  QUESTIONNAIRE_admin.loadQuestions);
             updateMap();
+            $('#questionnaire_name').click(function() {
+                $('#questionnaire_name').css('display', 'none');
+
+                $('#editable_questionnaire_name')
+                    .val($('#questionnaire_name').text())
+                    .css('display', '')
+                    .focus();
+            });
+
+            $('#editable_questionnaire_name').blur(function() {
+                $('#editable_questionnaire_name').css('display', 'none');
+                $('#questionnaire_name')
+                    .text($('#editable_questionnaire_name').val())
+                    .css('display', '');
+            });
             $("#modalWindow").fadeIn("slow");
             //$("#cancelQuestionnaireButton").fadeIn("slow");
             //
@@ -133,23 +148,23 @@ QUESTIONNAIRE_admin  = (function () {
         },
     
         addTxtQuestion: function (){
-            QUESTIONNAIRE_admin.questions.push(new Question( null, null, "New Text Question", "TEXT", ko.observableArray([]), QUESTIONNAIRE_admin.nextId(), QUESTIONNAIRE_admin.questionnaire.id));
-            QUESTIONNAIRE_admin.updateMap();
+            questions.push(new Question( null, null, "New Text Question", "TEXT", ko.observableArray([]), QUESTIONNAIRE_admin.nextId(), QUESTIONNAIRE_admin.questionnaire.id));
+            updateMap();
         },
     
         addMOQuestion: function (){
-            QUESTIONNAIRE_admin.questions.push(new Question(null, null, "New Multiple Choice Question", "MULTIPLE_CHOICE", ko.observableArray([new Question(0,0,"Dummy", "MULTIPLE_CHOICE", [], 0, QUESTIONNAIRE_admin.questionnaire().id)]), QUESTIONNAIRE_admin.nextId(), QUESTIONNAIRE_admin.questionnaire().id));
-            QUESTIONNAIRE_admin.updateMap();
+            questions.push(new Question(null, null, "New Multiple Choice Question", "MULTIPLE_CHOICE", ko.observableArray([new Question(0,0,"Dummy", "MULTIPLE_CHOICE", [], 0, QUESTIONNAIRE_admin.questionnaire().id)]), QUESTIONNAIRE_admin.nextId(), QUESTIONNAIRE_admin.questionnaire().id));
+            updateMap();
         },
     
         addSOQuestion: function (){
-            QUESTIONNAIRE_admin.questions.push(new Question(null, null, "New Single Choice Question", "SINGLE_CHOICE", ko.observableArray([new Question(0,0,"Dummy", "SINGLE_CHOICE", [], 0, QUESTIONNAIRE_admin.questionnaire().id)]), QUESTIONNAIRE_admin.nextId(), QUESTIONNAIRE_admin.questionnaire().id));
-            QUESTIONNAIRE_admin.updateMap();
+            questions.push(new Question(null, null, "New Single Choice Question", "SINGLE_CHOICE", ko.observableArray([new Question(0,0,"Dummy", "SINGLE_CHOICE", [], 0, QUESTIONNAIRE_admin.questionnaire().id)]), QUESTIONNAIRE_admin.nextId(), QUESTIONNAIRE_admin.questionnaire().id));
+            updateMap();
         },
     
         removeQuestion : function(question){
-            QUESTIONNAIRE_admin.questions.remove(question);
-            QUESTIONNAIRE_admin.updateMap();
+            questions.remove(question);
+            updateMap();
         },
     
         addSOAnswer : function(question){
@@ -180,25 +195,10 @@ QUESTIONNAIRE_admin  = (function () {
         },
     
         loadQuestions: function(data) {
-            QUESTIONNAIRE_admin.id=0;
+            id=0;
             data = fixQuestions(JSON.parse(data));
-            QUESTIONNAIRE_admin.questions(data);
-            QUESTIONNAIRE_admin.updateMap();
-            $('#questionnaire_name').click(function() {
-                $('#questionnaire_name').css('display', 'none');
-    
-                $('#editable_questionnaire_name')
-                    .val($('#questionnaire_name').text())
-                    .css('display', '')
-                    .focus();
-            });
-    
-            $('#editable_questionnaire_name').blur(function() {
-                $('#editable_questionnaire_name').css('display', 'none');
-                $('#questionnaire_name')
-                    .text($('#editable_questionnaire_name').val())
-                    .css('display', '');
-            });
+            questions(data);
+            updateMap();
         }
 
     };
