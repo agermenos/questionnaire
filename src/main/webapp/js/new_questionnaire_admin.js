@@ -35,10 +35,7 @@ QUESTIONNAIRE_admin  = (function () {
     var updateMap = function(){
         QUESTIONNAIRE_admin.questions().map(function(obj){
             obj.idx = getNextId();
-            var button = document.getElementById('bind_'+obj.idx);
-            button.onclick = (function(){
-                return $('#'+obj.idx).toggle();
-            });
+
         });
     };
 
@@ -71,21 +68,24 @@ QUESTIONNAIRE_admin  = (function () {
     var questions = ko.observable([]);
 
     var Question= function (id, parent, question, type, answers, idx, questionnaireId){
-        QUESTIONNAIRE_admin.id = id;
-        QUESTIONNAIRE_admin.question = question;
-        QUESTIONNAIRE_admin.type = type;
-        QUESTIONNAIRE_admin.parent = parent;
-        QUESTIONNAIRE_admin.answers =answers;
-        QUESTIONNAIRE_admin.idx = idx;
-        QUESTIONNAIRE_admin.questionnaireId = questionnaireId;
+        var question_instance = new Object;
+        question_instance.id = id;
+        question_instance.question = question;
+        question_instance.type = type;
+        question_instance.parent = parent;
+        question_instance.answers =answers;
+        question_instance.idx = idx;
+        question_instance.questionnaireId = questionnaireId;
+        return question_instance;
     };
 
     var Questionnaire= function (id, name, date, status) {
-        var QUESTIONNAIRE_admin = this;
-        QUESTIONNAIRE_admin.id = id;
-        QUESTIONNAIRE_admin.name = name;
-        QUESTIONNAIRE_admin.created = date?date:createNewDate();
-        QUESTIONNAIRE_admin.status = ko.observable(status);
+        var questionnaire_instance = new Object;
+        questionnaire_instance.id = id;
+        questionnaire_instance.name = name;
+        questionnaire_instance.created = date?date:createNewDate();
+        questionnaire_instance.status = ko.observable(status);
+        return questionnaire_instance;
     };
 
     return {
@@ -148,17 +148,17 @@ QUESTIONNAIRE_admin  = (function () {
         },
     
         addTxtQuestion: function (){
-            questions.push(new Question( null, null, "New Text Question", "TEXT", ko.observableArray([]), QUESTIONNAIRE_admin.nextId(), QUESTIONNAIRE_admin.questionnaire.id));
+            QUESTIONNAIRE_admin.questions().push(new Question( null, null, "New Text Question", "TEXT", ko.observableArray([]), QUESTIONNAIRE_admin.nextId(), QUESTIONNAIRE_admin.questionnaire.id));
             updateMap();
         },
     
         addMOQuestion: function (){
-            questions.push(new Question(null, null, "New Multiple Choice Question", "MULTIPLE_CHOICE", ko.observableArray([new Question(0,0,"Dummy", "MULTIPLE_CHOICE", [], 0, QUESTIONNAIRE_admin.questionnaire().id)]), QUESTIONNAIRE_admin.nextId(), QUESTIONNAIRE_admin.questionnaire().id));
+            QUESTIONNAIRE_admin.questions().push(new Question(null, null, "New Multiple Choice Question", "MULTIPLE_CHOICE", ko.observableArray([new Question(0,0,"Dummy", "MULTIPLE_CHOICE", [], 0, QUESTIONNAIRE_admin.questionnaire().id)]), getNextId(), QUESTIONNAIRE_admin.questionnaire().id));
             updateMap();
         },
     
         addSOQuestion: function (){
-            questions.push(new Question(null, null, "New Single Choice Question", "SINGLE_CHOICE", ko.observableArray([new Question(0,0,"Dummy", "SINGLE_CHOICE", [], 0, QUESTIONNAIRE_admin.questionnaire().id)]), QUESTIONNAIRE_admin.nextId(), QUESTIONNAIRE_admin.questionnaire().id));
+            QUESTIONNAIRE_admin.questions().push(new Question(null, null, "New Single Choice Question", "SINGLE_CHOICE", ko.observableArray([new Question(0,0,"Dummy", "SINGLE_CHOICE", [], 0, QUESTIONNAIRE_admin.questionnaire().id)]), getNextId(), QUESTIONNAIRE_admin.questionnaire().id));
             updateMap();
         },
     
