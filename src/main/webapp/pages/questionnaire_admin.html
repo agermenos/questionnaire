@@ -114,7 +114,7 @@
                             </tr>
                             </tbody>
                         </table>
-                        <input class="btn btn-default" type="button" id="addQuestionnaireButton" value="Add Questionnaire"
+                        <input class="btn btn-danger" type="button" id="addQuestionnaireButton" value="Add Questionnaire"
                                data-bind="click: addQuestionnaire"/>
                     </div>
 
@@ -138,14 +138,14 @@
                                     <div class="panel panel-default" data-bind="foreach: questions()">
                                         <div class="input-group">
                                             <span class="input-group-btn" data-bind="if:answers()">
-                                                    <button data-bind="enable:answers().length>0, attr:{id:'bind_' + idx}" class="btn btn-default" type="button">Answers <span class="badge" data-bind="text:answers().length, visible:answers().length>0"></span>
+                                                    <button data-bind="enable:answers().length>0, attr:{id:'bind_' + idx}" class="btn btn-info" type="button">Answers <span class="badge" data-bind="text:answers().length, visible:answers().length>0"></span>
                                                     </button>
                                             </span>
                                             <input type="text" class="form-control" data-bind="value:question" aria-label="...">
                                             <span class="input-group-btn">
-                                                <span data-bind="if: type=='MULTIPLE_CHOICE'"> <button type="button" data-bind="click: $root.addMOAnswer" class="btn btn-default">Add Answer</button></span>
-                                                <span data-bind="if: type=='SINGLE_CHOICE'"> <button type="button" data-bind="click: $root.addSOAnswer" class="btn btn-default">Add Answer</button> </span>
-                                                <button type="button" class="btn btn-default" aria-expanded="false" data-bind="click: $root.removeQuestion">Remove</button>
+                                                <span data-bind="if: type=='MULTIPLE_CHOICE'"> <button type="button" data-bind="click: $root.addMOAnswer" class="btn btn-primary">Add Answer</button></span>
+                                                <span data-bind="if: type=='SINGLE_CHOICE'"> <button type="button" data-bind="click: $root.addSOAnswer" class="btn btn-primary">Add Answer</button> </span>
+                                                <button type="button" class="btn btn-danger" aria-expanded="false" data-bind="click: $root.removeQuestion">Remove</button>
                                             </span>
                                         </div>
                                         <div class="input-group">
