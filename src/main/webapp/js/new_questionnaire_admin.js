@@ -10,7 +10,7 @@ QUESTIONNAIRE_admin  = (function () {
     });
 
     var Question= function (id, parent, question, type, answers, idx, questionnaireId){
-        var question_instance = new Object;
+        var question_instance = {};
         question_instance.id = id;
         question_instance.question = question;
         question_instance.type = type;
@@ -22,7 +22,7 @@ QUESTIONNAIRE_admin  = (function () {
     };
 
     var Questionnaire= function (id, name, date, status) {
-        var questionnaire_instance = new Object;
+        var questionnaire_instance = {};
         questionnaire_instance.id = id;
         questionnaire_instance.name = name;
         questionnaire_instance.created = date?date:createNewDate();
@@ -46,9 +46,15 @@ QUESTIONNAIRE_admin  = (function () {
         return return_questions;
     };
 
-    var updateMap = function(){
-        QUESTIONNAIRE_admin.questions().map(function(obj){
+    var updateMap = function(questionnaire){
+            if (!questionnaire) {
+                questionnaire = QUESTIONNAIRE_admin.questionnaire();
+            }
+            questionnaire.questions.map(function(obj){
             obj.idx = getNextId();
+            obj.clicker = (function(){
+                return $('#'+obj.idx).toggle();
+            });
 
         });
     };
@@ -89,7 +95,7 @@ QUESTIONNAIRE_admin  = (function () {
         return (++QUESTIONNAIRE_admin.id);
     };
 
-    var questionnaire= ko.observable(new Object);
+    var questionnaire= ko.observable({});
     var questions = ko.observable([new Question(null,null, null, null, ko.observable([]),null,null)]);
 
     return {
@@ -102,6 +108,9 @@ QUESTIONNAIRE_admin  = (function () {
 
         questionnaire:questionnaire,
         questions:questions,
+        doClick:function(question){
+           question.clicker();
+        },
         validateForm: function(){
             var return_value=true;
             $("[required]").each(function(i){
@@ -132,10 +141,9 @@ QUESTIONNAIRE_admin  = (function () {
         },
     
         editQuestionnaire : function(questionnaire) {
+            updateMap(questionnaire);
             QUESTIONNAIRE_admin.questionnaire(questionnaire);
             QUESTIONNAIRE_admin.questions(QUESTIONNAIRE_admin.questionnaire().questions);
-            //AJAX_LIB.callAJAX('http://localhost:8080/services/questions/'+questionnaire.id, 'GET', null,  QUESTIONNAIRE_admin.loadQuestions);
-            updateMap();
             $("#modalWindow").fadeIn("slow");
             //$("#cancelQuestionnaireButton").fadeIn("slow");
             //
@@ -148,17 +156,17 @@ QUESTIONNAIRE_admin  = (function () {
         },
     
         addMOQuestion: function (){
-            QUESTIONNAIRE_admin.questions().push(new Question(null, null, "New Multiple Choice Question", "MULTIPLE_CHOICE", ko.observableArray([new Question(0,0,"Dummy", "MULTIPLE_CHOICE", [], 0, QUESTIONNAIRE_admin.questionnaire().id)]), getNextId(), QUESTIONNAIRE_admin.questionnaire().id));
+            QUESTIONNAIRE_admin.questions().push(new Question(null, null, "New Multiple Choice Question", "MULTIPLE_CHOICE", ko.observableArray([new Question(null, null,"new answer", "MULTIPLE_CHOICE", [], 0, QUESTIONNAIRE_admin.questionnaire().id)]), getNextId(), QUESTIONNAIRE_admin.questionnaire().id));
             updateMap();
         },
     
         addSOQuestion: function (){
-            QUESTIONNAIRE_admin.questions().push(new Question(null, null, "New Single Choice Question", "SINGLE_CHOICE", ko.observableArray([new Question(0,0,"Dummy", "SINGLE_CHOICE", [], 0, QUESTIONNAIRE_admin.questionnaire().id)]), getNextId(), QUESTIONNAIRE_admin.questionnaire().id));
+            QUESTIONNAIRE_admin.questions().push(new Question(null, null, "New Single Choice Question", "SINGLE_CHOICE", ko.observableArray([new Question(null, null,"new answer", "SINGLE_CHOICE", [], 0, QUESTIONNAIRE_admin.questionnaire().id)]), getNextId(), QUESTIONNAIRE_admin.questionnaire().id));
             updateMap();
         },
     
         removeQuestion : function(question){
-            questions.remove(question);
+            QUESTIONNAIRE_admin.questions().remove(question);
             updateMap();
         },
     
@@ -193,7 +201,6 @@ QUESTIONNAIRE_admin  = (function () {
             id=0;
             data = fixQuestions(JSON.parse(data));
             questions(data);
-            updateMap();
         }
 
     };
