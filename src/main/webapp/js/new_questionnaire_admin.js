@@ -9,12 +9,26 @@ QUESTIONNAIRE_admin  = (function () {
         ko.applyBindings(QUESTIONNAIRE_admin);
     });
 
-    statuses = [
-        {id:"NEW", text:"new"},
-        {id:"EDITING", text:"editing"},
-        {id:"OPERATIONAL", text:"operational"},
-        {id:"DISABLED", text:"disabled"}
-    ];
+    var Question= function (id, parent, question, type, answers, idx, questionnaireId){
+        var question_instance = new Object;
+        question_instance.id = id;
+        question_instance.question = question;
+        question_instance.type = type;
+        question_instance.parent = parent;
+        question_instance.answers =answers;
+        question_instance.idx = idx;
+        question_instance.questionnaireId = questionnaireId;
+        return question_instance;
+    };
+
+    var Questionnaire= function (id, name, date, status) {
+        var questionnaire_instance = new Object;
+        questionnaire_instance.id = id;
+        questionnaire_instance.name = name;
+        questionnaire_instance.created = date?date:createNewDate();
+        questionnaire_instance.status = ko.observable(status);
+        return questionnaire_instance;
+    };
 
     var fixQuestions= function (questions){
         var i=0;
@@ -51,10 +65,21 @@ QUESTIONNAIRE_admin  = (function () {
     };
 
     var setClicks = function(){
-        $("#iem_menu_subscribe").click(function(){$("#iem_subscriptions_modal").modal();});
-        $("#iem_subscribe_addSource").click(function(){$("#iem_susbscribe_sourceSpan").show();});
-        $("#iem_subscribe_register").click(function(){console.log("Registering...");});
-        $("#iem_subscribe_test").click(function(){console.log("Testing service."); IEM_subscription.testService();});
+        $('#questionnaire_name').click(function() {
+            $('#questionnaire_name').css('display', 'none');
+
+            $('#editable_questionnaire_name')
+                .val($('#questionnaire_name').text())
+                .css('display', '')
+                .focus();
+        });
+
+        $('#editable_questionnaire_name').blur(function() {
+            $('#editable_questionnaire_name').css('display', 'none');
+            $('#questionnaire_name')
+                .text($('#editable_questionnaire_name').val())
+                .css('display', '');
+        });
     };
 
     var getNextId = function() {
@@ -65,30 +90,15 @@ QUESTIONNAIRE_admin  = (function () {
     };
 
     var questionnaire= ko.observable(new Object);
-    var questions = ko.observable([]);
-
-    var Question= function (id, parent, question, type, answers, idx, questionnaireId){
-        var question_instance = new Object;
-        question_instance.id = id;
-        question_instance.question = question;
-        question_instance.type = type;
-        question_instance.parent = parent;
-        question_instance.answers =answers;
-        question_instance.idx = idx;
-        question_instance.questionnaireId = questionnaireId;
-        return question_instance;
-    };
-
-    var Questionnaire= function (id, name, date, status) {
-        var questionnaire_instance = new Object;
-        questionnaire_instance.id = id;
-        questionnaire_instance.name = name;
-        questionnaire_instance.created = date?date:createNewDate();
-        questionnaire_instance.status = ko.observable(status);
-        return questionnaire_instance;
-    };
+    var questions = ko.observable([new Question(null,null, null, null, ko.observable([]),null,null)]);
 
     return {
+        statuses : [
+            {id:"NEW", text:"new"},
+            {id:"EDITING", text:"editing"},
+            {id:"OPERATIONAL", text:"operational"},
+            {id:"DISABLED", text:"disabled"}
+        ],
 
         questionnaire:questionnaire,
         questions:questions,
@@ -122,25 +132,10 @@ QUESTIONNAIRE_admin  = (function () {
         },
     
         editQuestionnaire : function(questionnaire) {
-            QUESTIONNAIRE_admin.questionnaire= ko.observable(questionnaire);
-            QUESTIONNAIRE_admin.questions= ko.observable(QUESTIONNAIRE_admin.questionnaire().questions);
+            QUESTIONNAIRE_admin.questionnaire(questionnaire);
+            QUESTIONNAIRE_admin.questions(QUESTIONNAIRE_admin.questionnaire().questions);
             //AJAX_LIB.callAJAX('http://localhost:8080/services/questions/'+questionnaire.id, 'GET', null,  QUESTIONNAIRE_admin.loadQuestions);
             updateMap();
-            $('#questionnaire_name').click(function() {
-                $('#questionnaire_name').css('display', 'none');
-
-                $('#editable_questionnaire_name')
-                    .val($('#questionnaire_name').text())
-                    .css('display', '')
-                    .focus();
-            });
-
-            $('#editable_questionnaire_name').blur(function() {
-                $('#editable_questionnaire_name').css('display', 'none');
-                $('#questionnaire_name')
-                    .text($('#editable_questionnaire_name').val())
-                    .css('display', '');
-            });
             $("#modalWindow").fadeIn("slow");
             //$("#cancelQuestionnaireButton").fadeIn("slow");
             //
@@ -190,7 +185,7 @@ QUESTIONNAIRE_admin  = (function () {
         },
     
         loadQuestionnaire: function(data){
-            QUESTIONNAIRE_admin.questionnaires = ko.observable(JSON.parse(data));
+            QUESTIONNAIRE_admin.questionnaires = ko.observableArray(JSON.parse(data));
             console.log (QUESTIONNAIRE_admin.questionnaires());
         },
     

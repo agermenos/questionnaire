@@ -137,8 +137,8 @@
                                     </div>
                                     <div class="panel panel-default" data-bind="foreach: questions()">
                                         <div class="input-group">
-                                            <span class="input-group-btn" data-bind="if:answers()">
-                                                    <button data-bind="enable:answers().length>0, attr:{id:'bind_' + idx}" class="btn btn-default" type="button">Answers <span class="badge" data-bind="text:answers().length, visible:answers().length>0"></span>
+                                            <span class="input-group-btn" data-bind="if:answers">
+                                                    <button data-bind="enable:answers.length>0" class="btn btn-default" type="button">Answers <span class="badge" data-bind="text:answers.length, visible:answers.length>0"></span>
                                                     </button>
                                             </span>
                                             <input type="text" class="form-control" data-bind="value:question" aria-label="...">
@@ -149,8 +149,8 @@
                                             </span>
                                         </div>
                                         <div class="input-group">
-                                            <div class="panel-collapse collapse" data-bind="attr: { id: idx }" >
-                                               <div  data-bind="foreach: answers()">
+                                            <div class="panel-collapse collapse"  >
+                                               <div  data-bind="foreach: answers">
                                                    <div class="input-group">
                                                        <span class="input-group-addon" data-bind="visible:type=='SINGLE_CHOICE'">
                                                             <input type="radio" aria-label="...">
