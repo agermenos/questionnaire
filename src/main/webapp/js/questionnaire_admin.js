@@ -63,12 +63,7 @@ function QuestionnaireViewModel() {
     self.editQuestionnaire = function(questionnaire) {
         self.questionnaire(questionnaire);
         self.loadQuestions(self.questionnaire().questions);
-       // AJAX_LIB.callAJAX('http://localhost:8080/services/questions/'+questionnaire.id, 'GET', null,  self.loadQuestions);
-        //self.updateMap();
         $("#modalWindow").fadeIn("slow");
-        //$("#cancelQuestionnaireButton").fadeIn("slow");
-        //
-
     };
 
     self.updateMap = function(){
@@ -84,17 +79,22 @@ function QuestionnaireViewModel() {
     };
 
     self.addTxtQuestion= function (){
-        self.questions.push(new Question( null, null, "New Text Question", "TEXT", ko.observableArray([]), self.nextId(), self.questionnaire.id));
+        self.questions.push(new Question( null, null, "New Text Question", "TEXT",
+            ko.observableArray([]), self.nextId(), self.questionnaire.id));
         self.updateMap();
     };
 
     self.addMOQuestion= function (){
-        self.questions.push(new Question(null, null, "New Multiple Choice Question", "MULTIPLE_CHOICE", ko.observableArray([new Question(0,0,"Dummy", "MULTIPLE_CHOICE", [], 0, self.questionnaire().id)]), self.nextId(), self.questionnaire().id));
+        self.questions.push(new Question(null, null, "New Multiple Choice Question", "MULTIPLE_CHOICE",
+            ko.observableArray([new Question(null, null,"new answer", "MULTIPLE_CHOICE", [], 0,
+                self.questionnaire().id)]), self.nextId(), self.questionnaire().id));
         self.updateMap();
     };
 
     self.addSOQuestion= function (){
-        self.questions.push(new Question(null, null, "New Single Choice Question", "SINGLE_CHOICE", ko.observableArray([new Question(0,0,"Dummy", "SINGLE_CHOICE", [], 0, self.questionnaire().id)]), self.nextId(), self.questionnaire().id));
+        self.questions.push(new Question(null, null, "New Single Choice Question", "SINGLE_CHOICE",
+            ko.observableArray([new Question(null, null, "new answer", "SINGLE_CHOICE", [], 0,
+                self.questionnaire().id)]), self.nextId(), self.questionnaire().id));
         self.updateMap();
     };
 
@@ -104,18 +104,24 @@ function QuestionnaireViewModel() {
     };
 
     self.addSOAnswer = function(question){
-        question.answers.push(new Question(null, question.id, "new answer", "SINGLE_CHOICE", ko.observableArray([]), 0, self.questionnaire().id));
+        question.answers.push(new Question(null, question.id, "new answer", "SINGLE_CHOICE",
+            ko.observableArray([]), 0, self.questionnaire().id));
     };
 
     self.addMOAnswer = function(question){
 
-        question.answers.push(new Question(null, question.id, "new answer", "MULTIPLE_CHOICE", ko.observableArray([]), 0, self.questionnaire().id));
+        question.answers.push(new Question(null, question.id, "new answer", "MULTIPLE_CHOICE",
+            ko.observableArray([]), 0, self.questionnaire().id));
 
     };
 
     self.storeQuestionnaire=function(){
         var jsonQs = ko.toJSON(self.questions);
-        AJAX_LIB.callAJAX('http://localhost:8080/services/questionnaire/' + self.questionnaire().id , 'PUT', jsonQs, function() {self.messenger("Questionnaire uploaded", "success", "glyphicon-thumbs-up"); } );
+        AJAX_LIB.callAJAX('http://localhost:8080/services/questionnaire/' + self.questionnaire().id ,
+            'PUT', jsonQs,
+            function() {
+                self.messenger("Questionnaire uploaded", "success", "glyphicon-thumbs-up");
+            } );
     };
 
     self.cancelQuestionnaire=function(){
@@ -163,7 +169,9 @@ function QuestionnaireViewModel() {
             if (question.answers && question.answers.length>0) {
                 answers = self.fixQuestions(question.answers);
             }
-            return_questions.push(new Question(question.id, question.parent, question.question, question.type, ko.observableArray(answers), currentViewModel.nextId(), question.questionnaireId));
+            return_questions.push(new Question(question.id, question.parent, question.question,
+                question.type, ko.observableArray(answers), currentViewModel.nextId(),
+                question.questionnaireId));
         }
         return return_questions;
     }

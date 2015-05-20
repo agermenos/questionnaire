@@ -47,6 +47,17 @@ public class QuestionnaireTest extends AbstractTest {
         questionnaireDao.add(questionnaire);
     }
 
+    public void updateQuestionnaireTest(QuestionnaireDao questionnaireDao, UserDao userDao) {
+        UserEntity user = userDao.findByEmail("agermenos@gmail.com");
+        QuestionnaireEntity questionnaireEntity = questionnaireDao.findByUser(user.getId()).get(0);
+        QuestionEntity outerQuestion =  createQuestion("Cuantas habas hay en un habal?", null, QuestionStatus.SINGLE_CHOICE);
+        questionnaireEntity.addQuestion(outerQuestion);
+        questionnaireEntity.addQuestion(createQuestion("Una haba", outerQuestion, QuestionStatus.SINGLE_CHOICE));
+        questionnaireEntity.addQuestion(createQuestion("Muchas habas", outerQuestion, QuestionStatus.SINGLE_CHOICE));
+        questionnaireEntity.addQuestion(createQuestion("Los habales no existen", outerQuestion, QuestionStatus.SINGLE_CHOICE));
+        questionnaireDao.update(questionnaireEntity);
+    }
+
     public void getQuestionnaire(QuestionnaireDao questionnaireDao){
         QuestionnaireEntity questionnaire = questionnaireDao.findById(150);
         List<QuestionEntity> questions = questionnaireDao.findQuestionsByQuestionnaire(150);
@@ -64,6 +75,8 @@ public class QuestionnaireTest extends AbstractTest {
         UserDao userDao = (UserDao)questionnaireTest.getContext().getBean("userDao");
 
         //questionnaireTest.createQuestionnaireTest(questionnaireDao, userDao);
+        questionnaireTest.getQuestionnaire(questionnaireDao);
+        questionnaireTest.updateQuestionnaireTest(questionnaireDao, userDao);
         questionnaireTest.getQuestionnaire(questionnaireDao);
     }
 }
