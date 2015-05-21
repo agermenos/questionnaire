@@ -24,7 +24,7 @@ public class QuestionnaireTest extends AbstractTest {
     private QuestionEntity createQuestion(String strQuestion, QuestionEntity parent, QuestionStatus status){
         QuestionEntity question = new QuestionEntity();
         question.setQuestion(strQuestion);
-        question.setParent(parent.getId());
+        question.setParent(parent==null?null:parent.getId());
         question.setType(status.toString());
         return question;
     }

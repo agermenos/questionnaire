@@ -42,7 +42,7 @@ public class QuestionEntity {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -70,11 +70,11 @@ public class QuestionEntity {
         this.questionnaireId = questionnaireId;
     }
 
-    public int getParent() {
+    public Integer getParent() {
         return parent;
     }
 
-    public void setParent(int parent) {
+    public void setParent(Integer parent) {
         this.parent = parent;
     }
 

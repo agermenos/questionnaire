@@ -20,6 +20,8 @@ import java.util.List;
 public class QuestionnaireDao {
     @Autowired
     private SessionFactory sessionFactory;
+    @Autowired
+    private QuestionDao questionDao;
 
     @Transactional
     public void add(QuestionnaireEntity questionnaire){
@@ -31,6 +33,19 @@ public class QuestionnaireDao {
 
     @Transactional
     public void update(QuestionnaireEntity questionnaire){
+        for (QuestionEntity question:questionnaire.getQuestions()){
+            for (QuestionEntity answer: question.getAnswers()){
+                if (answer.getQuestionnaireId()!=null) {
+                    answer.setQuestionnaireId(null);
+                }
+            }
+            if (question.getId()==null) {
+                questionDao.add(question);
+            }
+            else {
+                questionDao.update(question);
+            }
+        }
         sessionFactory.getCurrentSession().update(questionnaire);
     }
 
