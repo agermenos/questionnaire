@@ -40,6 +40,7 @@ public class QuestionnaireDao {
                 }
             }
             if (question.getId()==null) {
+                question.setQuestionnaireId(questionnaire.getId());
                 questionDao.add(question);
             }
             else {

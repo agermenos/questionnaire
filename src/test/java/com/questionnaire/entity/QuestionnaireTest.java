@@ -52,16 +52,16 @@ public class QuestionnaireTest extends AbstractTest {
         QuestionnaireEntity questionnaireEntity = questionnaireDao.findByUser(user.getId()).get(0);
         QuestionEntity outerQuestion =  createQuestion("Cuantas habas hay en un habal?", null, QuestionStatus.SINGLE_CHOICE);
         questionnaireEntity.addQuestion(outerQuestion);
-        questionnaireEntity.addQuestion(createQuestion("Una haba", outerQuestion, QuestionStatus.SINGLE_CHOICE));
-        questionnaireEntity.addQuestion(createQuestion("Muchas habas", outerQuestion, QuestionStatus.SINGLE_CHOICE));
-        questionnaireEntity.addQuestion(createQuestion("Los habales no existen", outerQuestion, QuestionStatus.SINGLE_CHOICE));
+        outerQuestion.addAnswer(createQuestion("Una haba", outerQuestion, QuestionStatus.SINGLE_CHOICE));
+        outerQuestion.addAnswer(createQuestion("Muchas habas", outerQuestion, QuestionStatus.SINGLE_CHOICE));
+        outerQuestion.addAnswer(createQuestion("Los habales no existen", outerQuestion, QuestionStatus.SINGLE_CHOICE));
         questionnaireDao.update(questionnaireEntity);
     }
 
     public void getQuestionnaire(QuestionnaireDao questionnaireDao){
-        QuestionnaireEntity questionnaire = questionnaireDao.findById(150);
-        List<QuestionEntity> questions = questionnaireDao.findQuestionsByQuestionnaire(150);
-        getLog().info("Questionnaire: " + questionnaire.toString());
+        //QuestionnaireEntity questionnaire = questionnaireDao.findById(1500);
+        List<QuestionEntity> questions = questionnaireDao.findQuestionsByQuestionnaire(1500);
+        //getLog().info("Questionnaire: " + questionnaire.toString());
         if (questions!=null){
             for (QuestionEntity question:questions){
                 getLog().info("Question: " + question.toString());
