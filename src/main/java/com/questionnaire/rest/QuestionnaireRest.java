@@ -3,16 +3,13 @@ package com.questionnaire.rest;
 import com.google.gson.Gson;
 import com.questionnaire.jpa.QuestionEntity;
 import com.questionnaire.jpa.QuestionnaireEntity;
-import com.questionnaire.services.QuestionnaireServices;
-import jdk.nashorn.internal.ir.RuntimeNode;
+import com.questionnaire.services.QuestionnaireService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * Created by Alejandro on 2/12/2015.
@@ -22,7 +19,7 @@ import java.util.List;
 @RequestMapping("/questionnaire")
 public class QuestionnaireRest {
     @Autowired
-    QuestionnaireServices questionnaireServices;
+    QuestionnaireService questionnaireServices;
     Logger log = LoggerFactory.getLogger(QuestionnaireRest.class);
     Gson gson=new Gson();
 

@@ -14,7 +14,7 @@ public class QuestionnaireEntity {
     @SequenceGenerator(name = "pk_sequence", sequenceName = "questionnaire_id_seq")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pk_sequence")
     @Column(name = "id", unique = true, nullable = false)
-    private int id;
+    private Integer id;
     @Basic
     @Column(name = "name")
     private String name;
@@ -35,11 +35,11 @@ public class QuestionnaireEntity {
     private List<QuestionEntity> questions;
 
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -111,9 +111,8 @@ public class QuestionnaireEntity {
         if (modified != null ? !modified.equals(that.modified) : that.modified != null) return false;
         if (!name.equals(that.name)) return false;
         if (questions != null ? !questions.equals(that.questions) : that.questions != null) return false;
-        if (!status.equals(that.status)) return false;
+        return status.equals(that.status);
 
-        return true;
     }
 
     @Override

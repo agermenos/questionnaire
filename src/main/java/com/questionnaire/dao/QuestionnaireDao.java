@@ -32,21 +32,7 @@ public class QuestionnaireDao {
     }
 
     @Transactional
-    public void update(QuestionnaireEntity questionnaire){
-        for (QuestionEntity question:questionnaire.getQuestions()){
-            for (QuestionEntity answer: question.getAnswers()){
-                if (answer.getQuestionnaireId()!=null) {
-                    answer.setQuestionnaireId(null);
-                }
-            }
-            if (question.getId()==null) {
-                question.setQuestionnaireId(questionnaire.getId());
-                questionDao.add(question);
-            }
-            else {
-                questionDao.update(question);
-            }
-        }
+    public void update(QuestionnaireEntity questionnaire) {
         sessionFactory.getCurrentSession().update(questionnaire);
     }
 

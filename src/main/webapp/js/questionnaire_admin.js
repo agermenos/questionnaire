@@ -5,12 +5,6 @@
  * Dublin, CA. Mar 21, 2015
  */
 
-function createNewDate(){
-    var day = new Date();
-    var strDay = (day.getMonth()+1) + "/" + (day.getDate()) + "/" + day.getFullYear();
-    return strDay;
-}
-
 function QuestionnaireViewModel() {
     var self = this;
 
@@ -193,7 +187,7 @@ function Questionnaire(id, name, date, status) {
     var self = this;
     self.id = id;
     self.name = name;
-    self.created = date?date:createNewDate();
+    self.created = date?date:UTILS.createNewDate();
     self.status = ko.observable(status);
 }
 

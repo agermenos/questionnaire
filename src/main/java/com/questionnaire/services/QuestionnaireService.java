@@ -18,8 +18,8 @@ import java.util.List;
 /**
  * Created by Alejandro on 1/24/2015.
  */
-@Service("questionnaireServices")
-public class QuestionnaireServices {
+@Service("questionnaireService")
+public class QuestionnaireService {
     @Autowired
     QuestionnaireDao questionnaireDao;
     @Autowired
@@ -61,13 +61,31 @@ public class QuestionnaireServices {
     @Transactional
     public void storeQuestionnaire(QuestionnaireEntity questionnaire, int userId){
         questionnaire.setUserId(userId);
-        if (questionnaire.getId()==0) {
+        if (questionnaire.getId()==null) {
             questionnaire.setCreated(new Date().toString());
             questionnaire.setModified(new Date().toString());
             questionnaire.setStatus(QuestionnaireStatus.CREATED.toString());
             questionnaireDao.add(questionnaire);
         }
         else {
+            for (QuestionEntity question : questionnaire.getQuestions()) {
+                if (question.getId()==null&&question.getAnswers().size()>0){
+                    QuestionEntity questionSkeleton = new QuestionEntity();
+                    questionSkeleton.setAnswers(question.getAnswers());
+                    question.setAnswers(null);
+                    question.setQuestionnaireId(questionnaire.getId());
+                    questionDao.add(question);
+                    question.setAnswers(questionSkeleton.getAnswers());
+                }
+                for (QuestionEntity answer : question.getAnswers()) {
+                    if (answer.getQuestionnaireId() != null) {
+                        answer.setQuestionnaireId(null);
+                    }
+                    answer.setParent(question.getId());
+                    questionDao.add(answer);
+                }
+                questionDao.update(question);
+            }
             questionnaire.setModified(new Date().toString());
             questionnaireDao.update(questionnaire);
         }

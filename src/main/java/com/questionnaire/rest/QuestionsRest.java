@@ -2,7 +2,7 @@ package com.questionnaire.rest;
 
 import com.google.gson.Gson;
 import com.questionnaire.jpa.QuestionEntity;
-import com.questionnaire.services.QuestionnaireServices;
+import com.questionnaire.services.QuestionnaireService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ import java.util.List;
 public class QuestionsRest {
 
     @Autowired
-    QuestionnaireServices questionnaireServices;
+    QuestionnaireService questionnaireServices;
     Logger log = LoggerFactory.getLogger(QuestionsRest.class);
     Gson gson=new Gson();
 
