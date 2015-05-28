@@ -36,15 +36,8 @@ public class QuestionnaireRest {
     @RequestMapping(value="/{id}", method = RequestMethod.PUT)
     public @ResponseBody
     String updateQuestion(@PathVariable int id, @RequestBody String jsonQuestionnaire) {
-        QuestionEntity questions[] = gson.fromJson(jsonQuestionnaire, QuestionEntity[].class);
-        for (QuestionEntity question:questions){
-            if (question.getId()==null || question.getId()==1) {
-                questionnaireServices.saveQuestion(question);
-            }
-        }
-        //QuestionnaireEntity questionnaire = questionnaireServices.getQuestionnaireById(id);
-        //questionnaire.setQuestions(questions);
-        //questionnaireServices.storeQuestionnaire(questionnaire);
+        QuestionnaireEntity questionnaire = gson.fromJson(jsonQuestionnaire, QuestionnaireEntity.class);
+        questionnaireServices.storeQuestionnaire(questionnaire);
         return null;
     }
 

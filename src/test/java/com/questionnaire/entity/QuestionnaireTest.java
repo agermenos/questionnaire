@@ -49,12 +49,13 @@ public class QuestionnaireTest extends AbstractTest {
     public void updateQuestionnaireTest(QuestionnaireService questionnaireService, UserDao userDao) {
         UserEntity user = userDao.findByEmail("agermenos@gmail.com");
         QuestionnaireEntity questionnaireEntity = questionnaireService.getQuestionsByUserId(user.getId()).get(0);
-        QuestionEntity outerQuestion =  createQuestion("Cuantas habas hay en un habal?", null, QuestionStatus.SINGLE_CHOICE);
-        questionnaireEntity.addQuestion(outerQuestion);
-        outerQuestion.addAnswer(createQuestion("Una haba", outerQuestion, QuestionStatus.SINGLE_CHOICE));
-        outerQuestion.addAnswer(createQuestion("Muchas habas", outerQuestion, QuestionStatus.SINGLE_CHOICE));
-        outerQuestion.addAnswer(createQuestion("Los habales no existen", outerQuestion, QuestionStatus.SINGLE_CHOICE));
-        questionnaireService.storeQuestionnaire(questionnaireEntity, user.getId());
+        //QuestionEntity outerQuestion =  createQuestion("Cuantas habas hay en un habal?", null, QuestionStatus.SINGLE_CHOICE);
+       // questionnaireEntity.addQuestion(outerQuestion);
+       // outerQuestion.addAnswer(createQuestion("Una haba", outerQuestion, QuestionStatus.SINGLE_CHOICE));
+       // outerQuestion.addAnswer(createQuestion("Muchas habas", outerQuestion, QuestionStatus.SINGLE_CHOICE));
+       // outerQuestion.addAnswer(createQuestion("Los habales no existen", outerQuestion, QuestionStatus.SINGLE_CHOICE));
+        questionnaireEntity.setUserId(user.getId());
+        questionnaireService.storeQuestionnaire(questionnaireEntity);
     }
 
     public void getQuestionnaire(QuestionnaireDao questionnaireDao, UserDao userDao){

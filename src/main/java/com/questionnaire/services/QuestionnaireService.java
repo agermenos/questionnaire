@@ -59,8 +59,7 @@ public class QuestionnaireService {
     }
 
     @Transactional
-    public void storeQuestionnaire(QuestionnaireEntity questionnaire, int userId){
-        questionnaire.setUserId(userId);
+    public void storeQuestionnaire(QuestionnaireEntity questionnaire){
         if (questionnaire.getId()==null) {
             questionnaire.setCreated(new Date().toString());
             questionnaire.setModified(new Date().toString());

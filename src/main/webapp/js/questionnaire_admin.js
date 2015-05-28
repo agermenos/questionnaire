@@ -31,7 +31,7 @@ function QuestionnaireViewModel() {
         {id:"DISABLED", text:"disabled"}
     ];
 
-    self.questionnaire=ko.observable(new Questionnaire(0,"new questionnaire", null, self.statuses[0]));
+    self.questionnaire=ko.observable(new Questionnaire(0,"new questionnaire", null, self.statuses[0], 0));
 
     self.questionnaires= ko.observableArray([]);
 
@@ -110,9 +110,12 @@ function QuestionnaireViewModel() {
     };
 
     self.storeQuestionnaire=function(){
-        var jsonQs = ko.toJSON(self.questions);
+        self.questionnaire().userId = self.user.id;
+        self.questionnaire().status = self.questionnaire().status.id;
+        self.questionnaire().questions=self.questions();
+        var jsonQ = ko.toJSON(self.questionnaire);
         AJAX_LIB.callAJAX('http://localhost:8080/services/questionnaire/' + self.questionnaire().id ,
-            'PUT', jsonQs,
+            'PUT', jsonQ,
             function() {
                 self.messenger("Questionnaire uploaded", "success", "glyphicon-thumbs-up");
             } );
@@ -183,12 +186,13 @@ function Question(id, parent, question, type, answers, idx, questionnaireId){
 }
 
 // Class to represent a row in the seat reservations grid
-function Questionnaire(id, name, date, status) {
+function Questionnaire(id, name, date, status, userId) {
     var self = this;
     self.id = id;
     self.name = name;
     self.created = date?date:UTILS.createNewDate();
     self.status = ko.observable(status);
+    self.userId = userId;
 }
 
 var currentViewModel =new QuestionnaireViewModel();
