@@ -81,7 +81,12 @@ public class QuestionnaireService {
                         answer.setQuestionnaireId(null);
                     }
                     answer.setParent(question.getId());
-                    questionDao.add(answer);
+                    if (answer.getId()==null) {
+                        questionDao.add(answer);
+                    }
+                    else {
+                        questionDao.update(answer);
+                    }
                 }
                 questionDao.update(question);
             }
