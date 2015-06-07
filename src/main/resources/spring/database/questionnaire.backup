@@ -1,0 +1,498 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.3.5
+-- Dumped by pg_dump version 9.3.5
+-- Started on 2015-06-07 09:38:31
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+DROP DATABASE questionnaire;
+--
+-- TOC entry 1990 (class 1262 OID 32801)
+-- Name: questionnaire; Type: DATABASE; Schema: -; Owner: postgres
+--
+
+CREATE DATABASE questionnaire WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'English_United States.1252' LC_CTYPE = 'English_United States.1252';
+
+
+ALTER DATABASE questionnaire OWNER TO postgres;
+
+\connect questionnaire
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- TOC entry 5 (class 2615 OID 2200)
+-- Name: public; Type: SCHEMA; Schema: -; Owner: postgres
+--
+
+CREATE SCHEMA public;
+
+
+ALTER SCHEMA public OWNER TO postgres;
+
+--
+-- TOC entry 1991 (class 0 OID 0)
+-- Dependencies: 5
+-- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: postgres
+--
+
+COMMENT ON SCHEMA public IS 'standard public schema';
+
+
+--
+-- TOC entry 180 (class 3079 OID 11750)
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 1993 (class 0 OID 0)
+-- Dependencies: 180
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 171 (class 1259 OID 32804)
+-- Name: answer; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE answer (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    question_id integer NOT NULL,
+    answer character varying NOT NULL
+);
+
+
+ALTER TABLE public.answer OWNER TO postgres;
+
+--
+-- TOC entry 170 (class 1259 OID 32802)
+-- Name: answer_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE answer_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.answer_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 1994 (class 0 OID 0)
+-- Dependencies: 170
+-- Name: answer_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE answer_id_seq OWNED BY answer.id;
+
+
+--
+-- TOC entry 173 (class 1259 OID 32815)
+-- Name: question; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE question (
+    id integer NOT NULL,
+    questionnaire_id integer,
+    question character varying NOT NULL,
+    type character varying NOT NULL,
+    parent_question integer
+);
+
+
+ALTER TABLE public.question OWNER TO postgres;
+
+--
+-- TOC entry 172 (class 1259 OID 32813)
+-- Name: question_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE question_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.question_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 1995 (class 0 OID 0)
+-- Dependencies: 172
+-- Name: question_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE question_id_seq OWNED BY question.id;
+
+
+--
+-- TOC entry 175 (class 1259 OID 32826)
+-- Name: questionnaire; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE questionnaire (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    name character varying NOT NULL,
+    created character varying NOT NULL,
+    modified character varying NOT NULL,
+    status character varying NOT NULL
+);
+
+
+ALTER TABLE public.questionnaire OWNER TO postgres;
+
+--
+-- TOC entry 174 (class 1259 OID 32824)
+-- Name: questionnaire_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE questionnaire_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.questionnaire_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 1996 (class 0 OID 0)
+-- Dependencies: 174
+-- Name: questionnaire_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE questionnaire_id_seq OWNED BY questionnaire.id;
+
+
+--
+-- TOC entry 177 (class 1259 OID 32837)
+-- Name: user; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE "user" (
+    id integer NOT NULL,
+    name character varying NOT NULL,
+    last_name character varying NOT NULL,
+    username character varying NOT NULL,
+    password character varying NOT NULL,
+    email character varying NOT NULL,
+    status character varying NOT NULL
+);
+
+
+ALTER TABLE public."user" OWNER TO postgres;
+
+--
+-- TOC entry 176 (class 1259 OID 32835)
+-- Name: user_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE user_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.user_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 1997 (class 0 OID 0)
+-- Dependencies: 176
+-- Name: user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE user_id_seq OWNED BY "user".id;
+
+
+--
+-- TOC entry 179 (class 1259 OID 32851)
+-- Name: user_questions; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE user_questions (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    questionnaire_id integer NOT NULL,
+    date date NOT NULL
+);
+
+
+ALTER TABLE public.user_questions OWNER TO postgres;
+
+--
+-- TOC entry 178 (class 1259 OID 32849)
+-- Name: user_questions_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE user_questions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.user_questions_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 1998 (class 0 OID 0)
+-- Dependencies: 178
+-- Name: user_questions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE user_questions_id_seq OWNED BY user_questions.id;
+
+
+--
+-- TOC entry 1851 (class 2604 OID 32807)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY answer ALTER COLUMN id SET DEFAULT nextval('answer_id_seq'::regclass);
+
+
+--
+-- TOC entry 1852 (class 2604 OID 32818)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY question ALTER COLUMN id SET DEFAULT nextval('question_id_seq'::regclass);
+
+
+--
+-- TOC entry 1853 (class 2604 OID 32829)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY questionnaire ALTER COLUMN id SET DEFAULT nextval('questionnaire_id_seq'::regclass);
+
+
+--
+-- TOC entry 1854 (class 2604 OID 32840)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "user" ALTER COLUMN id SET DEFAULT nextval('user_id_seq'::regclass);
+
+
+--
+-- TOC entry 1855 (class 2604 OID 32854)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY user_questions ALTER COLUMN id SET DEFAULT nextval('user_questions_id_seq'::regclass);
+
+
+--
+-- TOC entry 1977 (class 0 OID 32804)
+-- Dependencies: 171
+-- Data for Name: answer; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- TOC entry 1999 (class 0 OID 0)
+-- Dependencies: 170
+-- Name: answer_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('answer_id_seq', 1, false);
+
+
+--
+-- TOC entry 1979 (class 0 OID 32815)
+-- Dependencies: 173
+-- Data for Name: question; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO question (id, questionnaire_id, question, type, parent_question) VALUES (50, 50, 'How many fingers are in one hand?', 'TEXT', NULL);
+INSERT INTO question (id, questionnaire_id, question, type, parent_question) VALUES (51, 50, 'What''s the capital of Mexico?', 'SINGLE_CHOICE', NULL);
+INSERT INTO question (id, questionnaire_id, question, type, parent_question) VALUES (52, NULL, 'Estroncia', 'SINGLE_CHOICE', 51);
+INSERT INTO question (id, questionnaire_id, question, type, parent_question) VALUES (54, NULL, 'Guadalajara', 'SINGLE_CHOICE', 51);
+INSERT INTO question (id, questionnaire_id, question, type, parent_question) VALUES (53, NULL, 'Santa Lucia', 'SINGLE_CHOICE', 51);
+INSERT INTO question (id, questionnaire_id, question, type, parent_question) VALUES (55, NULL, 'Mexico City', 'SINGLE_CHOICE', 51);
+
+
+--
+-- TOC entry 2000 (class 0 OID 0)
+-- Dependencies: 172
+-- Name: question_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('question_id_seq', 9, true);
+
+
+--
+-- TOC entry 1981 (class 0 OID 32826)
+-- Dependencies: 175
+-- Data for Name: questionnaire; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO questionnaire (id, user_id, name, created, modified, status) VALUES (50, 50, 'Basic Questionnaire', 'Thu Feb 12 12:34:03 PST 2015', 'Thu Feb 12 12:34:03 PST 2015', 'CREATED');
+
+
+--
+-- TOC entry 2001 (class 0 OID 0)
+-- Dependencies: 174
+-- Name: questionnaire_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('questionnaire_id_seq', 1, true);
+
+
+--
+-- TOC entry 1983 (class 0 OID 32837)
+-- Dependencies: 177
+-- Data for Name: user; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO "user" (id, name, last_name, username, password, email, status) VALUES (50, 'Alejandro', 'Germenos', 'agermenos', 'pJHUykTIUgi4wPh885Yapq2Jc/A8fYboXHXAN90Ayo4=', 'agermenos@gmail.com', 'ACTIVE');
+
+
+--
+-- TOC entry 2002 (class 0 OID 0)
+-- Dependencies: 176
+-- Name: user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('user_id_seq', 1, true);
+
+
+--
+-- TOC entry 1985 (class 0 OID 32851)
+-- Dependencies: 179
+-- Data for Name: user_questions; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- TOC entry 2003 (class 0 OID 0)
+-- Dependencies: 178
+-- Name: user_questions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('user_questions_id_seq', 1, false);
+
+
+--
+-- TOC entry 1857 (class 2606 OID 32812)
+-- Name: answer_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY answer
+    ADD CONSTRAINT answer_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1859 (class 2606 OID 32823)
+-- Name: question_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY question
+    ADD CONSTRAINT question_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1861 (class 2606 OID 32834)
+-- Name: questionnaire_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY questionnaire
+    ADD CONSTRAINT questionnaire_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1866 (class 2606 OID 32845)
+-- Name: user_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY "user"
+    ADD CONSTRAINT user_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1868 (class 2606 OID 32856)
+-- Name: user_questions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY user_questions
+    ADD CONSTRAINT user_questions_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1862 (class 1259 OID 32846)
+-- Name: unique_email; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE UNIQUE INDEX unique_email ON "user" USING btree (email);
+
+
+--
+-- TOC entry 1863 (class 1259 OID 32847)
+-- Name: unique_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE UNIQUE INDEX unique_id ON "user" USING btree (id);
+
+
+--
+-- TOC entry 1864 (class 1259 OID 32848)
+-- Name: unique_username; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE UNIQUE INDEX unique_username ON "user" USING btree (username);
+
+
+--
+-- TOC entry 1992 (class 0 OID 0)
+-- Dependencies: 5
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+-- Completed on 2015-06-07 09:38:31
+
+--
+-- PostgreSQL database dump complete
+--
+
