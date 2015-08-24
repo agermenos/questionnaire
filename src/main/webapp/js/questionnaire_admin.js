@@ -56,6 +56,7 @@ function QuestionnaireViewModel() {
 
     self.editQuestionnaire = function(questionnaire) {
         self.questionnaire(questionnaire);
+        self.status = self.statuses[1];
         self.loadQuestions(self.questionnaire().questions);
         $("#modalWindow").fadeIn("slow");
     };
@@ -197,4 +198,4 @@ function Questionnaire(id, name, date, status, userId) {
 
 var currentViewModel =new QuestionnaireViewModel();
 ko.applyBindings(currentViewModel);
-AJAX_LIB.callAJAX('http://localhost:8080/services/questionnaire/100', 'GET', null,  currentViewModel.loadQuestionnaire);
+AJAX_LIB.callAJAX('http://localhost:8080/services/questionnaire/50', 'GET', null,  currentViewModel.loadQuestionnaire);
